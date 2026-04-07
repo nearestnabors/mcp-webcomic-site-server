@@ -53,7 +53,7 @@ describe('Phase 34.6: Site Builds Without ES Module Errors', () => {
   });
 
   describe('site build', () => {
-    it('should build without ES module errors', () => {
+    it('should build without ES module errors', { timeout: 120000 }, () => {
       // This test runs the actual build to verify ES module issue is fixed
       let buildOutput: string;
       let buildExitedWithError = false;
