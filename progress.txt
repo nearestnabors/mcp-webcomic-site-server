@@ -534,3 +534,31 @@
 - 575 tests passing, 2 skipped (git-related)
 - Phase 33 now complete
 - Remaining: Phase 28.2 (manual git init), Phase 35.5-35.8 (commit, push)
+
+---
+
+## Task 35.5 - Initial Git Commit [prd: 28.T2, 35.T8]
+
+**Completed:** 2026-04-07
+
+**Summary:** Created initial git commit for mcp-webcomic-site-server public demo repository
+
+**Key changes:**
+- Created initial commit with comprehensive message describing three-surface architecture
+- Fixed test timeout in phase-34.6-site-builds.test.ts (increased from 5s to 120s)
+- 134 files committed, 23774 insertions
+
+**Files changed:**
+- tests/phase-34.6-site-builds.test.ts (added 120s timeout for build test)
+- ralph/implementation-plan.md (marked 35.5 complete, updated status summary)
+- ralph/prd-items.json (marked 28.T2, 35.T8 passes: true)
+
+**Decisions:**
+- TDD: existing test (35.T8) was failing RED for "should have at least one commit"
+- Made commit to turn test GREEN
+- Fixed flaky test timeout issue discovered during verification
+
+**Notes:**
+- All feedback loops pass (typecheck, test, lint)
+- 580 tests passing
+- Phase 35.5 complete; remaining: 35.6 (push to GitHub - requires manual execution)
