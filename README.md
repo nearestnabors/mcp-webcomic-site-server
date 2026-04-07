@@ -225,7 +225,7 @@ mcp-webcomic-site-server/
 │   └── pages/              # Static pages
 ├── shared/                 # Shared design tokens
 ├── mcp-server/             # HTTP MCP server (for Netlify)
-├── mcp-server-stdio/       # Stdio MCP server (for Claude Desktop)
+├── mcp-server-stdio/       # Stdio MCP server (for local development)
 ├── mcp-app/                # MCP App UI (comic reader)
 ├── netlify/                # Netlify Functions
 ├── scripts/                # Build scripts
