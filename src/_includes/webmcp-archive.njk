@@ -1,0 +1,56 @@
+{# WebMCP Archive Page - Tools for paginated archive pages
+   Tools: list_comics, search_comics (from base)
+          + prev_page (if pagination.href.previous exists)
+          + next_page (if pagination.href.next exists)
+
+   Required variables: pagination (11ty pagination object)
+#}
+{% include "webmcp-base.njk" %}
+
+{% if pagination and (pagination.href.previous or pagination.href.next) %}
+<script>
+(function() {
+  'use strict';
+
+  if (!('modelContext' in navigator)) {
+    return;
+  }
+
+  {% if pagination.href.previous %}
+  // Tool: prev_page (newer content)
+  navigator.modelContext.registerTool({
+    name: 'prev_page',
+    description: 'Navigate to the previous page of the archive (newer content)',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => {
+      window.location.href = {{ pagination.href.previous | dump | safe }};
+      return { success: true, navigating_to: {{ pagination.href.previous | dump | safe }} };
+    }
+  });
+  {% endif %}
+
+  {% if pagination.href.next %}
+  // Tool: next_page (older content)
+  navigator.modelContext.registerTool({
+    name: 'next_page',
+    description: 'Navigate to the next page of the archive (older content)',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => {
+      window.location.href = {{ pagination.href.next | dump | safe }};
+      return { success: true, navigating_to: {{ pagination.href.next | dump | safe }} };
+    }
+  });
+  {% endif %}
+
+  console.log('WebMCP: archive tools registered ({% if pagination.href.previous %}prev_page{% endif %}{% if pagination.href.previous and pagination.href.next %}, {% endif %}{% if pagination.href.next %}next_page{% endif %})');
+})();
+</script>
+{% endif %}

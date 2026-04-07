@@ -1,0 +1,92 @@
+{# WebMCP Base - Core tools available on all pages
+   Tools: list_comics, search_comics
+
+   This partial should be included at the end of <body> in layouts.
+   Other webmcp partials extend this by including it first.
+#}
+<script>
+(function() {
+  'use strict';
+
+  if (!('modelContext' in navigator)) {
+    return;
+  }
+
+  // Pagefind API instance (loaded on first search)
+  let pagefindInstance = null;
+
+  async function loadPagefind() {
+    if (pagefindInstance) return pagefindInstance;
+    try {
+      pagefindInstance = await import('/pagefind/pagefind.js');
+      await pagefindInstance.init();
+      return pagefindInstance;
+    } catch (e) {
+      console.error('Failed to load Pagefind:', e);
+      return null;
+    }
+  }
+
+  // Tool: list_comics - available on all pages
+  navigator.modelContext.registerTool({
+    name: 'list_comics',
+    description: 'Get a list of all available comics in the archive',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => ({
+      comics: [
+        {
+          id: 'fran-hopper-comics',
+          title: 'Fran Hopper Comics',
+          type: 'episodic',
+          description: 'Public domain comics from Golden Age artist Fran Hopper (1922-2017), featuring sci-fi heroines.',
+          archive_url: '/comics/'
+        }
+      ]
+    })
+  });
+
+  // Tool: search_comics - available on all pages
+  navigator.modelContext.registerTool({
+    name: 'search_comics',
+    description: 'Search comic transcripts and commentary for matching content',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'The search query to find in comic transcripts and commentary'
+        }
+      },
+      required: ['query']
+    },
+    execute: async ({ query }) => {
+      const pagefind = await loadPagefind();
+      if (!pagefind) {
+        return { error: 'Search not available (Pagefind failed to load)' };
+      }
+      try {
+        const searchResults = await pagefind.search(query);
+        const results = await Promise.all(
+          searchResults.results.slice(0, 10).map(async (result) => {
+            const data = await result.data();
+            return {
+              url: data.url,
+              title: data.meta?.title || data.url,
+              excerpt: data.excerpt
+            };
+          })
+        );
+        return { results, total: searchResults.results.length };
+      } catch (e) {
+        return { error: 'Search failed: ' + e.message };
+      }
+    }
+  });
+
+  console.log('WebMCP: base tools registered (list_comics, search_comics)');
+})();
+</script>

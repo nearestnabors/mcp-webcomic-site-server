@@ -1,0 +1,65 @@
+/* =============================================================================
+   MCP WEBCOMIC SITE SERVER - SHARED COMPONENTS
+
+   Reusable UI components shared between the static site and MCP App.
+   Depends on tokens.css being loaded first.
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   PRIMARY BUTTON
+
+   The primary button with blue background. Use sparingly for primary actions.
+
+   Usage:
+   - Static site: storyline links, form submits
+   - MCP App: Prev/Next navigation only
+
+   DO NOT use for: toggle buttons, utility buttons, secondary actions
+   ----------------------------------------------------------------------------- */
+
+.rtg-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-family: var(--rtg-font-body);
+  font-size: var(--rtg-font-size-base);
+  font-weight: 600;
+  text-decoration: none;
+  color: white;
+  background-color: var(--rtg-color-primary);
+  border: none;
+  border-radius: var(--rtg-border-radius);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.rtg-button:hover {
+  background-color: var(--rtg-color-primary-light);
+  color: white;
+  text-decoration: none;
+}
+
+.rtg-button:active {
+  background-color: var(--rtg-color-primary-dark);
+}
+
+.rtg-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rtg-button--secondary {
+  background-color: var(--rtg-color-surface);
+}
+
+.rtg-button--secondary:hover {
+  background-color: var(--rtg-color-bg-dark);
+}
+
+/* Link styled as button */
+a.rtg-button {
+  color: white !important;  /* Override link colors */
+}
+
+a.rtg-button:visited {
+  color: white !important;
+}

@@ -1,0 +1,30 @@
+<aside class="sidebar">
+  {% include "search-form.njk" %}
+
+  <nav class="toc important">
+    <h3>Table of Contents</h3>
+    <ul>
+      <li>
+        <a class="button" href="/comics/">Comics Archive</a>
+      </li>
+      <li id="story-jump">
+        <details>
+          <summary><h4>Jump to a Story</h4></summary>
+          <ul class="storyline-list">
+            {% for storyline in allOtherComicsStorylines %}
+            <li{% if storyline.id == storyline_id %} class="current"{% endif %}>
+              <a href="/other-comics/{{ storyline.firstPageSlug }}/">{{ storyline.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </nav>
+
+  {# Cast section - only for Olivia Bryce pages, NOT crow-princess #}
+  {% if storyline_id !== 'crow-princess' %}
+    {% set comicId = 'other-comics' %}
+    {% include "sidebar-characters.njk" %}
+  {% endif %}
+</aside>

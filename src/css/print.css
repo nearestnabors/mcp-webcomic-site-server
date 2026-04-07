@@ -1,0 +1,27 @@
+/*
+Theme Name: Sequential
+Theme URI: http://wordpress.org/
+Description: A theme for story arc-based web comics.
+Author: Rachel "the Great" Nabors of http://rachelnabors.com
+Version: 1.0 Betta
+*/
+
+html {width:100%}
+
+body {
+	background: #fff;
+	font-size: 12pt;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+body,h1,h2,h3,h4,h5,h6,p {color: #000;}
+
+img, a img {border: 0;}
+
+a {
+	color: #d00;
+	background: transparent;
+	text-decoration: underline;
+}
+
+#header, #footer, #navigation, .ads {display: none;}

@@ -1,0 +1,38 @@
+{# Recursive macro for rendering comments with nested replies #}
+{% macro renderComment(comment) %}
+<li class="comment" id="comment-{{ comment.id }}">
+  <div class="comment-header">
+    <cite class="comment-author">
+      {% if comment.authorUrl %}
+      <a href="{{ comment.authorUrl }}">{{ comment.author }}</a>
+      {% else %}
+      {{ comment.author }}
+      {% endif %}
+    </cite>
+    {% if comment.date %}
+    <time class="comment-date">{{ comment.date }}</time>
+    {% endif %}
+  </div>
+  <div class="comment-body">
+    {{ comment.text | markdown | safe }}
+  </div>
+  {% if comment.replies and comment.replies.length %}
+  <ul class="children">
+    {% for reply in comment.replies %}
+    {{ renderComment(reply) }}
+    {% endfor %}
+  </ul>
+  {% endif %}
+</li>
+{% endmacro %}
+
+{% if comments and comments.length %}
+<div id="disqus_thread" class="comments-archive">
+  <h3>Comments (Archived)</h3>
+  <ol class="comment-list">
+    {% for comment in comments %}
+    {{ renderComment(comment) }}
+    {% endfor %}
+  </ol>
+</div>
+{% endif %}

@@ -1,0 +1,109 @@
+/* =============================================================================
+   MCP WEBCOMIC SITE SERVER - SHARED DESIGN TOKENS
+
+   These CSS custom properties are imported by both:
+   - The static site (src/css/)
+   - The MCP App (mcp-app/)
+
+   IMPORTANT: Changes here affect both surfaces. Test both after editing.
+   ============================================================================= */
+
+:root {
+  /* ===== COLOR PALETTE: Professional Grey/Blue ===== */
+
+  /* Primary - Blue */
+  --rtg-color-primary: #2563eb;           /* Blue 600 */
+  --rtg-color-primary-light: #3b82f6;     /* Blue 500 */
+  --rtg-color-primary-dark: #1d4ed8;      /* Blue 700 */
+
+  /* Accent - Cyan */
+  --rtg-color-accent: #06b6d4;            /* Cyan 500 */
+  --rtg-color-accent-light: #22d3ee;      /* Cyan 400 */
+
+  /* Backgrounds */
+  --rtg-color-bg-dark: #1e293b;           /* Slate 800 */
+  --rtg-color-bg-darker: #0f172a;         /* Slate 900 */
+  --rtg-color-bg-light: #f8fafc;          /* Slate 50 */
+  --rtg-color-surface: #334155;           /* Slate 700 */
+  --rtg-color-bg-body: #f8fafc;           /* Page background */
+  --rtg-color-bg-masthead: #0f172a;       /* Masthead bar background */
+  --rtg-color-bg-footer: #1e293b;         /* Footer gradient start */
+  --rtg-color-bg-footer-end: #0f172a;     /* Footer gradient end */
+
+  /* Text */
+  --rtg-color-text-light: #f1f5f9;        /* Slate 100 */
+  --rtg-color-text-dark: #0f172a;         /* Slate 900 */
+  --rtg-color-text-muted: #94a3b8;        /* Slate 400 */
+  --rtg-color-text-body: #334155;         /* Body text on light bg */
+  --rtg-color-text-dark-bg: #e2e8f0;      /* Text on dark backgrounds */
+
+  /* Links */
+  --rtg-color-link: #60a5fa;              /* Blue 400 */
+  --rtg-color-link-hover: #93c5fd;        /* Blue 300 */
+  --rtg-color-link-visited: #a78bfa;      /* Violet 400 */
+  --rtg-color-link-light: #60a5fa;        /* Links on dark bg */
+  --rtg-color-link-light-visited: #a78bfa;/* Visited links on dark bg */
+  --rtg-color-link-light-hover: #93c5fd;  /* Hovered links on dark bg */
+
+  /* Status */
+  --rtg-color-success: #22c55e;           /* Green 500 */
+  --rtg-color-warning: #f59e0b;           /* Amber 500 */
+  --rtg-color-error: #ef4444;             /* Red 500 */
+
+  /* UI colors */
+  --rtg-color-border: #cbd5e1;            /* Slate 300 */
+  --rtg-color-border-light: #e2e8f0;      /* Slate 200 */
+
+  /* ===== TYPOGRAPHY: System Fonts ===== */
+
+  /* Use system font stack - no custom fonts to load */
+  --rtg-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+  --rtg-font-heading: var(--rtg-font-body);
+  --rtg-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+                   Consolas, "Liberation Mono", monospace;
+  --rtg-font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Font sizes */
+  --rtg-font-size-sm: 0.875rem;
+  --rtg-font-size-base: 1rem;
+  --rtg-font-size-lg: 1.125rem;
+  --rtg-font-size-xl: 1.25rem;
+  --rtg-font-size-2xl: 1.5rem;
+  --rtg-font-size-3xl: 1.875rem;
+
+  /* ===== SPACING ===== */
+  --rtg-space-xs: 0.25rem;
+  --rtg-space-sm: 0.5rem;
+  --rtg-space-md: 1rem;
+  --rtg-space-lg: 1.5rem;
+  --rtg-space-xl: 2rem;
+  --rtg-space-2xl: 3rem;
+
+  /* Layout */
+  --rtg-content-max-width: 960px;
+  --rtg-content-max-width-narrow: 800px;  /* For MCP app */
+  --rtg-sidebar-width: 200px;
+  --rtg-masthead-height: 60px;
+  --rtg-masthead-height-compact: 60px;    /* For MCP app */
+
+  /* Button sizing */
+  --rtg-button-padding: 0.5rem 1rem;
+  --rtg-button-border-radius: 6px;
+  --rtg-button-font-size: 14px;
+
+  /* ===== EFFECTS ===== */
+  --rtg-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --rtg-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --rtg-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --rtg-border-radius: 6px;
+
+  --rtg-button-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --rtg-button-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --rtg-text-shadow-button: none;
+
+  /* ===== ASSETS: No External Dependencies ===== */
+  /* No external asset dependencies - use CSS gradients/colors instead */
+  --rtg-bg-pattern: none;
+  --rtg-sprite-url: none;
+}

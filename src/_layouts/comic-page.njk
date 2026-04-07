@@ -1,0 +1,97 @@
+{% extends "base.njk" %}
+
+{% block title %}{% if titleFormat == 'comics' %}{{ title }} | {{ site.name }} Comics{% elif titleFormat == 'other-comics' %}» {{ title }}{% else %}{{ title }}{% endif %}{% endblock %}
+
+{% block prevnext %}
+{% if prevUrl %}
+<link rel="prev" href="{{ prevUrl }}">
+{% elif prevStorylineUrl %}
+<link rel="prev" href="{{ prevStorylineUrl }}">
+{% endif %}
+{% if nextUrl %}
+<link rel="next" href="{{ nextUrl }}">
+{% elif nextStorylineUrl %}
+<link rel="next" href="{{ nextStorylineUrl }}">
+{% endif %}
+{% endblock %}
+
+{% block head %}
+  {# Determine the best description: excerpt > alt > truncated transcript > default #}
+  {% set metaDescription = excerpt or alt or (transcript | truncate(150)) or 'A comic page from ' + site.name + ' webcomic archive' %}
+  <!-- Meta description -->
+  <meta name="description" content="{{ metaDescription }}">
+  <!-- Open Graph for comic page -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:image" content="{{ site.url }}/{{ image }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:description" content="{{ metaDescription }}">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ title }}">
+  <meta name="twitter:image" content="{{ site.url }}/{{ image }}">
+{% endblock %}
+
+{% block content %}
+<article class="post_full post_comic" data-pagefind-body>
+  <header>
+    <time datetime="{{ publishedDate }}">{{ publishedDate | formatDate }}</time>
+    <h1 data-pagefind-meta="title">{{ title }}</h1>
+  </header>
+
+  <div class="comic">
+    <div class="comic-click-nav">
+      {% if prevUrl %}
+      <a href="{{ prevUrl }}" class="click-zone click-prev" aria-label="Previous page"></a>
+      {% elif prevStorylineUrl %}
+      <a href="{{ prevStorylineUrl }}" class="click-zone click-prev" aria-label="Previous page"></a>
+      {% endif %}
+      {% if nextUrl %}
+      <a href="{{ nextUrl }}" class="click-zone click-next" aria-label="Next page"></a>
+      {% elif nextStorylineUrl %}
+      <a href="{{ nextStorylineUrl }}" class="click-zone click-next" aria-label="Next page"></a>
+      {% endif %}
+      <img id="the_comic-image"
+           src="/{{ image }}"
+           alt=" "
+           {% if transcript %}aria-describedby="page-{{ slug }}-transcript"{% endif %}
+           {% if imageWidth %}width="{{ imageWidth }}"{% endif %}
+           {% if imageHeight %}height="{{ imageHeight }}"{% endif %}>
+    </div>
+  </div>
+
+  {# Accessible transcript widget - appears directly under comic, before navigation #}
+  {% if transcript %}
+  <div class="transcript-widget">
+    <button class="transcript-toggle" aria-expanded="false" aria-controls="page-{{ slug }}-transcript">
+      <span class="toggle-icon" aria-hidden="true">&#9654;</span> Transcript
+    </button>
+    <div id="page-{{ slug }}-transcript" class="transcript-content sr-only" data-pagefind-weight="10">
+      {{ transcript | markdown | safe }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% include "comic-nav.njk" %}
+
+  {% if commentary %}
+  <div class="copy">
+    {{ commentary | markdown | safe }}
+  </div>
+  {% endif %}
+
+  {% include "comments.njk" %}
+</article>
+{% endblock %}
+
+{% block sidebar %}
+{% if titleFormat == 'other-comics' %}
+{% include "sidebar-other-comics.njk" %}
+{% else %}
+{% include "sidebar-comics.njk" %}
+{% endif %}
+{% endblock %}
+
+{% block webmcp %}
+{% include "webmcp-comic.njk" %}
+{% endblock %}

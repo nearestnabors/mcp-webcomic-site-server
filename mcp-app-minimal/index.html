@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTG Comics - Minimal Test</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      background: #667eea;
+      color: white;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+    p {
+      font-size: 16px;
+      margin: 0;
+    }
+    .status {
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .status.connecting {
+      background: rgba(255,255,255,0.2);
+    }
+    .status.connected {
+      background: #22c55e;
+    }
+    .status.error {
+      background: #ef4444;
+    }
+    .data {
+      background: rgba(0,0,0,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>RTG Comics</h1>
+    <p>MCP App Test</p>
+    <p>If you see this, the MCP App iframe is rendering!</p>
+    <div id="status" class="status connecting">Connecting to host...</div>
+    <div id="data" class="data" style="display: none;"></div>
+  </div>
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>

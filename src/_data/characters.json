@@ -1,0 +1,20 @@
+{
+  "gale-allen": {
+    "slug": "gale-allen",
+    "name": "Gale Allen",
+    "comicId": "fran-hopper-comics",
+    "bio": "Captain Gale Allen commands the Girl Squadron, an elite all-female space battalion operating in the far reaches of the galaxy. A natural leader with tactical brilliance and unwavering moral courage, she leads her crew through encounters with alien civilizations and cosmic threats. First appeared in Planet Comics #21 (1942).",
+    "voice": "Confident alto with a hint of warmth, commanding but approachable - think Michelle Rodriguez meets Kate Mulgrew",
+    "thumbnailPath": "",
+    "thumbnailAlt": "Captain Gale Allen in her space uniform"
+  },
+  "mysta": {
+    "slug": "mysta",
+    "name": "Mysta of the Moon",
+    "comicId": "fran-hopper-comics",
+    "bio": "Mysta is the last guardian of ancient knowledge, a brilliant scientist who watches over Earth from her secret laboratory on the Moon. Possessing technology and wisdom far beyond the present age, she intervenes to protect humanity from threats they cannot comprehend. First appeared in Planet Comics #35 (1945).",
+    "voice": "Ethereal, measured, and wise - like Cate Blanchett's Galadriel with a touch of scientific precision",
+    "thumbnailPath": "",
+    "thumbnailAlt": "Mysta in her lunar laboratory"
+  }
+}

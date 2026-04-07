@@ -1,0 +1,89 @@
+{
+  "generated": "2026-04-07T00:00:00Z",
+  "comics": [
+    {
+      "id": "sample-comic",
+      "title": "Sample Comic",
+      "type": "episodic",
+      "description": "A sample webcomic for demonstration purposes",
+      "storylines": [
+        {
+          "id": "adventure-begins",
+          "title": "The Adventure Begins",
+          "order": 1,
+          "description": "Our heroes embark on their first adventure",
+          "pages": [
+            {
+              "pageNumber": 1,
+              "title": "The Adventure Begins, Page 1",
+              "slug": "adventure-begins-page-1",
+              "image": "sample-comic/adventure-begins/page-1.jpg",
+              "imageWidth": 800,
+              "imageHeight": 1200,
+              "alt": "A hero stands at the edge of a forest, looking determined",
+              "transcript": "Panel 1: A young hero stands at the edge of a dense forest.\nHero: \"Today, I begin my journey.\"",
+              "commentary": "This is where it all started!",
+              "publishedDate": "2026-01-01",
+              "comments": [],
+              "characters": ["hero"],
+              "originalUrl": "/comics/adventure-begins-page-1/"
+            },
+            {
+              "pageNumber": 2,
+              "title": "The Adventure Begins, Page 2",
+              "slug": "adventure-begins-page-2",
+              "image": "sample-comic/adventure-begins/page-2.jpg",
+              "imageWidth": 800,
+              "imageHeight": 1200,
+              "alt": "The hero meets a mysterious companion",
+              "transcript": "Panel 1: The hero walks into the forest.\nPanel 2: A mysterious figure appears.\nFigure: \"I've been waiting for you.\"",
+              "commentary": "Introducing our second character!",
+              "publishedDate": "2026-01-08",
+              "comments": [],
+              "characters": ["hero", "companion"],
+              "originalUrl": "/comics/adventure-begins-page-2/"
+            }
+          ]
+        },
+        {
+          "id": "new-horizons",
+          "title": "New Horizons",
+          "order": 2,
+          "description": "The journey continues to new lands",
+          "pages": [
+            {
+              "pageNumber": 1,
+              "title": "New Horizons, Page 1",
+              "slug": "new-horizons-page-1",
+              "image": "sample-comic/new-horizons/page-1.jpg",
+              "imageWidth": 800,
+              "imageHeight": 1200,
+              "alt": "The heroes arrive at a coastal village",
+              "transcript": "Panel 1: Our heroes arrive at a bustling coastal village.\nHero: \"We made it!\"\nCompanion: \"This is just the beginning.\"",
+              "commentary": "A new chapter begins.",
+              "publishedDate": "2026-02-01",
+              "comments": [],
+              "characters": ["hero", "companion"],
+              "originalUrl": "/comics/new-horizons-page-1/"
+            },
+            {
+              "pageNumber": 2,
+              "title": "New Horizons, Page 2",
+              "slug": "new-horizons-page-2",
+              "image": "sample-comic/new-horizons/page-2.jpg",
+              "imageWidth": 800,
+              "imageHeight": 1200,
+              "alt": "A ship waits at the harbor",
+              "transcript": "Panel 1: A magnificent ship waits at the harbor.\nPanel 2: The captain greets them.\nCaptain: \"Ready to set sail?\"",
+              "commentary": "The adventure expands!",
+              "publishedDate": "2026-02-08",
+              "comments": [],
+              "characters": ["hero", "companion", "captain"],
+              "originalUrl": "/comics/new-horizons-page-2/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

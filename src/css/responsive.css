@@ -1,0 +1,219 @@
+/**
+ * Responsive Web Design Styles
+ *
+ * Mobile-first approach is not feasible since base CSS has fixed widths.
+ * Instead, we use max-width breakpoints to override fixed widths.
+ *
+ * Breakpoints:
+ * - Desktop: > 1024px (no changes, use base styles)
+ * - Tablet: 768px - 1024px
+ * - Mobile: < 768px
+ */
+
+/* ============================================
+   Base responsive rules (all screen sizes)
+   ============================================ */
+
+/* Make all images scale properly */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Comic images should be responsive */
+.comic img,
+.image_comic-page,
+#the_comic-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ============================================
+   Tablet styles (max-width: 1024px)
+   ============================================ */
+
+@media screen and (max-width: 1024px) {
+    /* Reduce fixed wrapper widths */
+    .wrapper_header,
+    .breadcrumb,
+    .wrapper_content,
+    .footnotes,
+    .footer_main small {
+        width: 95%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Reduce content width */
+    #content {
+        width: 65%;
+        float: right;
+    }
+
+    /* Reduce sidebar width */
+    .sidebar {
+        width: 30%;
+        float: left;
+    }
+
+    /* Comic container responsive */
+    .comic {
+        width: 100%;
+        max-width: 650px;
+    }
+
+    /* Navigation arrows should not overflow */
+    .nav_comic {
+        width: 100%;
+        max-width: 650px;
+    }
+}
+
+/* ============================================
+   Mobile styles (max-width: 768px)
+   ============================================ */
+
+@media screen and (max-width: 768px) {
+    /* Stack layout - sidebar below content */
+    .wrapper_content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #content {
+        float: none;
+        width: 100%;
+        order: 1;
+    }
+
+    .sidebar {
+        float: none;
+        width: 100%;
+        order: 2;
+        margin-top: 2em;
+    }
+
+    /* Full-width comic container */
+    .comic {
+        width: 100%;
+        max-width: none;
+    }
+
+    /* Hide prev/next navigation arrows on mobile (too large) */
+    .nav_comic {
+        position: static;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1em;
+    }
+
+    .nav_comic a {
+        width: auto;
+        height: auto;
+        background: none;
+        text-indent: 0;
+        color: #0097c0;
+        padding: 0.5em 1em;
+        border: 1px solid #81a8b2;
+        border-radius: 4px;
+    }
+
+    .nav_comic a:hover,
+    .nav_comic a:focus {
+        background: #0097c0;
+        color: #fff;
+    }
+
+    /* Masthead navigation - handled by nav-mobile.css */
+    /* Logo and toggle layout managed there */
+
+    /* Archive listing cards stack */
+    .comic_listing {
+        float: none;
+        width: 100%;
+        height: auto;
+        margin: 0 0 1em 0;
+        padding: 10px;
+    }
+
+    .comic_listing img {
+        position: static;
+        margin-bottom: 10px;
+    }
+
+    .comic_listing .b_read-comic {
+        position: static;
+        width: 100%;
+    }
+
+    /* Footer responsive */
+    .footer_author,
+    .footer_social {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .footer_twitter {
+        float: none;
+        width: 100%;
+        margin: 1em 0;
+    }
+
+    /* Archive storyline cards */
+    .storyline-card {
+        width: 100%;
+        margin: 0 0 1em 0;
+    }
+
+    /* Storyline thumbnails */
+    .storyline-thumb {
+        max-width: 150px;
+    }
+}
+
+/* ============================================
+   Small mobile styles (max-width: 480px)
+   ============================================ */
+
+@media screen and (max-width: 480px) {
+    /* Smaller padding */
+    .wrapper_header,
+    .wrapper_content {
+        padding: 0 10px;
+    }
+
+    /* Smaller headings */
+    #content h1 {
+        font-size: 24px;
+    }
+
+    #content h2,
+    #content .post_comic h1 {
+        font-size: 18px;
+    }
+
+    /* Sidebar important box full width */
+    .sidebar .important,
+    .sidebar .shopping_cart {
+        padding: 15px;
+        margin: 0 0 1em 0;
+    }
+
+    /* Navigation links text only */
+    .nav_comic a {
+        font-size: 14px;
+        padding: 0.5em;
+    }
+
+    /* Transcript accordion full width on small screens */
+    .transcript-accordion {
+        width: 100%;
+        margin: 1em 0;
+    }
+
+    .transcript-accordion summary {
+        padding: 0.75em 1em;
+    }
+}

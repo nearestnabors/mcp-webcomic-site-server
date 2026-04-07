@@ -1,0 +1,59 @@
+{
+  "name": "mcp-webcomic-site-server",
+  "version": "1.0.0",
+  "description": "A template for building MCP-enabled webcomic archives",
+  "author": "Rachel Nabors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nearestnabors/mcp-webcomic-site-server"
+  },
+  "keywords": [
+    "mcp",
+    "webcomic",
+    "comics",
+    "model-context-protocol",
+    "11ty",
+    "eleventy",
+    "static-site",
+    "ai-agents"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "eleventy --config=eleventy.config.cjs",
+    "build:mcp-app": "cd mcp-app && npm install && npm run build",
+    "build:mcp-app-minimal": "cd mcp-app-minimal && npm install && npm run build",
+    "build:embed-apps": "node scripts/embed-mcp-apps.js",
+    "build:all": "npm run build:mcp-app && npm run build:mcp-app-minimal && npm run build:embed-apps && npm run build",
+    "serve": "eleventy --serve --config=eleventy.config.cjs",
+    "postbuild": "npx pagefind --site _site",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.js"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@netlify/functions": "^5.1.5",
+    "@pagefind/default-ui": "^1.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "cheerio": "^1.0.0",
+    "eslint": "^8.57.0",
+    "markdown-it": "^14.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.0.1",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "minisearch": "^6.0.0",
+    "zod": "^3.23.0"
+  }
+}

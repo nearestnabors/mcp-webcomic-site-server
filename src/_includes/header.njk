@@ -1,0 +1,39 @@
+<header class="masthead">
+  <div class="wrapper_header group">
+    <h3 class="imgreplace logo">
+      <a href="/">
+        <span></span>Comic Archive
+      </a>
+    </h3>
+
+    <!-- Mobile toggle button (hidden by default, shown via container query) -->
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-overlay">
+      <span class="nav-toggle-open">Navigation</span>
+      <span class="nav-toggle-close">Navigation &times;</span>
+    </button>
+
+    <!-- Normal nav (hidden via container query when narrow) -->
+    <nav class="group">
+      <div class="menu-primary-navigation-container">
+        <ul id="menu-primary-navigation" class="menu">
+          <li class="menu-item{% if page.url and (page.url.startsWith('/comics/') or page.url.startsWith('/comics_stories/')) %} current-menu-item{% endif %}">
+            <a title="Comic Archives" href="/comics/">Archive</a>
+          </li>
+          <li class="menu-item{% if page.url == '/about/' %} current-menu-item{% endif %}">
+            <a rel="author" href="/about/">About</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Mobile overlay (hidden, shown when expanded) -->
+    <div id="nav-overlay" class="nav-overlay" aria-hidden="true">
+      <nav>
+        <ul>
+          <li{% if page.url and (page.url.startsWith('/comics/') or page.url.startsWith('/comics_stories/')) %} class="current-menu-item"{% endif %}><a href="/comics/">Archive</a></li>
+          <li{% if page.url == '/about/' %} class="current-menu-item"{% endif %}><a rel="author" href="/about/">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,56 @@
+<aside class="sidebar">
+  {% include "search-form.njk" %}
+
+  <nav class="toc important">
+    <h3>Table of Contents</h3>
+    <ul>
+      {% if titleFormat == 'other-comics' %}
+      {# Other comics sidebar - list all storylines #}
+      <li>
+        <a class="button" href="/comics/">Comics Archive</a>
+      </li>
+      {% if firstPageUrl %}
+      <li>
+        <a class="button" href="{{ firstPageUrl }}">Start at the Beginning</a>
+      </li>
+      {% endif %}
+    </ul>
+    <h4>More Comics</h4>
+    <ul class="storyline-list">
+      {% for storyline in allOtherComicsStorylines %}
+      <li{% if storyline.id == storyline_id %} class="current"{% endif %}>
+        <a href="/other-comics/{{ storyline.firstPageSlug }}/">{{ storyline.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    {# Comics sidebar - original behavior #}
+      <li>
+        <a class="button" href="/comics/">Comics Archive</a>
+      </li>
+      {% if firstPageUrl %}
+      <li>
+        <a class="button" href="{{ firstPageUrl }}">Start at the Beginning</a>
+      </li>
+      {% endif %}
+      <li id="story-jump">
+        <details>
+          <summary><h4>Jump to a Story</h4></summary>
+          <ul class="storyline-list">
+            {% for storyline in storylines %}
+            <li{% if storyline.id == storyline_id %} class="current"{% endif %}>
+              <a href="/comics/{{ storyline.pages[0].slug }}/">{{ storyline.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </details>
+      </li>
+    </ul>
+    {% endif %}
+  </nav>
+
+  {# Include character sidebar for comics that have character data, excluding crow-princess storyline (spoilers!) #}
+  {% if comicId and storyline_id !== 'crow-princess' %}
+    {% include "sidebar-characters.njk" %}
+  {% endif %}
+</aside>

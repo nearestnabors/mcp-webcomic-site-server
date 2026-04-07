@@ -1,0 +1,189 @@
+{
+  "generated": "2026-04-07T00:00:00Z",
+  "comics": [
+    {
+      "id": "fran-hopper-comics",
+      "title": "Fran Hopper Comics",
+      "type": "episodic",
+      "description": "Golden Age comics by pioneering artist Fran Hopper (1922-2017), featuring strong female protagonists in space adventure and science fiction stories.",
+      "storylines": [
+        {
+          "id": "gale-allen",
+          "title": "Gale Allen and the Girl Squadron",
+          "order": 1,
+          "description": "Captain Gale Allen leads her all-female space battalion through thrilling adventures across the galaxy. From Planet Comics #30-40 (1944-1945).",
+          "pages": [
+            {
+              "pageNumber": 1,
+              "title": "Gale Allen, Page 1",
+              "slug": "gale-allen-page-1",
+              "image": "fran-hopper/gale-allen/page-1.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "Captain Gale Allen stands on the bridge of her spacecraft, commanding her crew with confidence.",
+              "transcript": "Panel 1: A sleek spacecraft cuts through the stars.\nCaption: \"Deep in the void of space...\"\n\nPanel 2: Captain Gale Allen stands at the helm, her uniform crisp, her gaze determined.\nGale Allen: \"All stations, report!\"\n\nPanel 3: The Girl Squadron members respond from their positions.\nSquadron Member: \"Navigation ready, Captain!\"\nAnother Member: \"Weapons systems online!\"",
+              "commentary": "This is the first page featuring Gale Allen, captain of the Girl Squadron. Notice Fran Hopper's distinctive art style - strong lines and dynamic compositions that give the female characters a sense of power and authority.",
+              "publishedDate": "1944-05-01",
+              "comments": [],
+              "characters": ["gale-allen"],
+              "originalUrl": "/comics/gale-allen-page-1/",
+              "excerpt": "Captain Gale Allen takes command of her spacecraft."
+            },
+            {
+              "pageNumber": 2,
+              "title": "Gale Allen, Page 2",
+              "slug": "gale-allen-page-2",
+              "image": "fran-hopper/gale-allen/page-2.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "The Girl Squadron spots an alien vessel approaching their position.",
+              "transcript": "Panel 1: Through the viewport, a strange vessel appears.\nSquadron Member: \"Captain! Unidentified ship approaching!\"\n\nPanel 2: Gale Allen studies the readouts.\nGale Allen: \"Configuration unknown. Could be hostile.\"\n\nPanel 3: She turns to face her crew.\nGale Allen: \"Battle stations! But hold fire until we know their intentions.\"",
+              "commentary": "Hopper's storytelling shines here - Gale Allen shows both tactical wisdom and restraint, making her a three-dimensional leader.",
+              "publishedDate": "1944-05-01",
+              "comments": [],
+              "characters": ["gale-allen"],
+              "originalUrl": "/comics/gale-allen-page-2/",
+              "excerpt": "An unknown vessel approaches the Girl Squadron."
+            },
+            {
+              "pageNumber": 3,
+              "title": "Gale Allen, Page 3",
+              "slug": "gale-allen-page-3",
+              "image": "fran-hopper/gale-allen/page-3.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "First contact: The alien vessel attempts communication.",
+              "transcript": "Panel 1: Strange symbols flash across the communication screen.\nComms Officer: \"They're trying to communicate, Captain!\"\n\nPanel 2: Gale Allen leans forward, intrigued.\nGale Allen: \"Can you decode it?\"\n\nPanel 3: The symbols begin to form words.\nScreen: \"WE... NEED... HELP...\"",
+              "commentary": "A classic science fiction trope - first contact - rendered with genuine tension by Hopper.",
+              "publishedDate": "1944-05-01",
+              "comments": [],
+              "characters": ["gale-allen"],
+              "originalUrl": "/comics/gale-allen-page-3/",
+              "excerpt": "The alien vessel sends a desperate message."
+            },
+            {
+              "pageNumber": 4,
+              "title": "Gale Allen, Page 4",
+              "slug": "gale-allen-page-4",
+              "image": "fran-hopper/gale-allen/page-4.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "Gale Allen makes the decision to help the stranded aliens.",
+              "transcript": "Panel 1: The crew looks to their captain.\nSquadron Member: \"What do we do, Captain?\"\n\nPanel 2: Gale Allen's expression is resolute.\nGale Allen: \"We help them. That's what the Girl Squadron does.\"\n\nPanel 3: The crew prepares for action.\nGale Allen: \"Prepare the docking bay. And stay alert - this could still be a trap.\"",
+              "commentary": "Gale Allen embodies the heroic idealism of Golden Age comics while maintaining a practical awareness of danger.",
+              "publishedDate": "1944-05-01",
+              "comments": [],
+              "characters": ["gale-allen"],
+              "originalUrl": "/comics/gale-allen-page-4/",
+              "excerpt": "The Girl Squadron decides to render aid."
+            },
+            {
+              "pageNumber": 5,
+              "title": "Gale Allen, Page 5",
+              "slug": "gale-allen-page-5",
+              "image": "fran-hopper/gale-allen/page-5.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "The alien vessel docks, revealing grateful survivors.",
+              "transcript": "Panel 1: The alien ship docks with a mechanical clunk.\nSFX: CLANG!\n\nPanel 2: The airlock opens to reveal alien beings - humanoid but with shimmering blue skin.\nAlien Leader: \"Thank you... we thought we were lost.\"\n\nPanel 3: Gale Allen extends her hand in greeting.\nGale Allen: \"You're safe now. Welcome aboard.\"\nCaption: \"To be continued...\"",
+              "commentary": "Hopper's aliens are designed with care - clearly non-human but relatable. The handshake gesture bridges the gap between species.",
+              "publishedDate": "1944-05-01",
+              "comments": [],
+              "characters": ["gale-allen"],
+              "originalUrl": "/comics/gale-allen-page-5/",
+              "excerpt": "First contact ends in friendship."
+            }
+          ]
+        },
+        {
+          "id": "mysta-of-the-moon",
+          "title": "Mysta of the Moon",
+          "order": 2,
+          "description": "Mysta, a brilliant scientist with advanced knowledge, defends Earth from cosmic threats from her lunar base. From Planet Comics #37-49 (1945-1947).",
+          "pages": [
+            {
+              "pageNumber": 1,
+              "title": "Mysta of the Moon, Page 1",
+              "slug": "mysta-of-the-moon-page-1",
+              "image": "fran-hopper/mysta-of-the-moon/page-1.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "Mysta observes Earth from her lunar laboratory, her robot companion at her side.",
+              "transcript": "Panel 1: The Moon's surface, dotted with strange crystalline structures.\nCaption: \"On the far side of the Moon...\"\n\nPanel 2: Inside a gleaming laboratory, a woman in a futuristic gown studies holographic displays.\nCaption: \"...lives Mysta, last guardian of ancient knowledge.\"\n\nPanel 3: A robot rolls to her side.\nRobot: \"Mysta, sensors detect unusual activity on Earth.\"\nMysta: \"Show me.\"",
+              "commentary": "Mysta represents the 'super-scientist' archetype - but notably, Hopper made this powerful figure female at a time when such characters were almost exclusively male.",
+              "publishedDate": "1945-07-01",
+              "comments": [],
+              "characters": ["mysta"],
+              "originalUrl": "/comics/mysta-of-the-moon-page-1/",
+              "excerpt": "Mysta detects a threat from her lunar base."
+            },
+            {
+              "pageNumber": 2,
+              "title": "Mysta of the Moon, Page 2",
+              "slug": "mysta-of-the-moon-page-2",
+              "image": "fran-hopper/mysta-of-the-moon/page-2.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "Holographic displays show a mysterious object approaching Earth.",
+              "transcript": "Panel 1: A holographic display shows Earth with a small object approaching.\nMysta: \"What is that?\"\n\nPanel 2: The robot analyzes the data.\nRobot: \"Unknown composition. Trajectory indicates intentional approach.\"\n\nPanel 3: Mysta's eyes narrow.\nMysta: \"Not a natural phenomenon then. Someone - or something - is coming.\"",
+              "commentary": "Hopper's scientific imagery was remarkably forward-thinking for the 1940s.",
+              "publishedDate": "1945-07-01",
+              "comments": [],
+              "characters": ["mysta"],
+              "originalUrl": "/comics/mysta-of-the-moon-page-2/",
+              "excerpt": "An unknown object approaches Earth."
+            },
+            {
+              "pageNumber": 3,
+              "title": "Mysta of the Moon, Page 3",
+              "slug": "mysta-of-the-moon-page-3",
+              "image": "fran-hopper/mysta-of-the-moon/page-3.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "Mysta prepares her spacecraft for the journey to intercept the threat.",
+              "transcript": "Panel 1: Mysta strides toward a gleaming spacecraft.\nMysta: \"Prepare my ship. I must intercept it before it reaches Earth.\"\n\nPanel 2: The robot follows.\nRobot: \"The risk is considerable, Mysta.\"\n\nPanel 3: She turns, her expression determined.\nMysta: \"The people of Earth cannot defend themselves against threats from space. That responsibility falls to me.\"",
+              "commentary": "Mysta's sense of duty drives her to protect a world that doesn't even know she exists.",
+              "publishedDate": "1945-07-01",
+              "comments": [],
+              "characters": ["mysta"],
+              "originalUrl": "/comics/mysta-of-the-moon-page-3/",
+              "excerpt": "Mysta launches to intercept the threat."
+            },
+            {
+              "pageNumber": 4,
+              "title": "Mysta of the Moon, Page 4",
+              "slug": "mysta-of-the-moon-page-4",
+              "image": "fran-hopper/mysta-of-the-moon/page-4.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "Mysta's spacecraft launches from the Moon toward the approaching object.",
+              "transcript": "Panel 1: The spacecraft lifts off from the lunar surface.\nSFX: WHOOOOSH!\n\nPanel 2: Stars streak past as the ship accelerates.\nCaption: \"Using technology beyond Earth's understanding...\"\n\nPanel 3: Mysta at the controls, focused.\nMysta: \"There it is. Now let's see what secrets you hold.\"",
+              "commentary": "The launch sequence showcases Hopper's dynamic sense of motion and scale.",
+              "publishedDate": "1945-07-01",
+              "comments": [],
+              "characters": ["mysta"],
+              "originalUrl": "/comics/mysta-of-the-moon-page-4/",
+              "excerpt": "The pursuit through space begins."
+            },
+            {
+              "pageNumber": 5,
+              "title": "Mysta of the Moon, Page 5",
+              "slug": "mysta-of-the-moon-page-5",
+              "image": "fran-hopper/mysta-of-the-moon/page-5.png",
+              "imageWidth": 100,
+              "imageHeight": 150,
+              "alt": "Mysta confronts the mysterious vessel, ready for whatever comes next.",
+              "transcript": "Panel 1: The unknown object looms ahead - a vessel of alien design.\nMysta: \"Incredible... the engineering is unlike anything in my archives.\"\n\nPanel 2: A hatch begins to open on the alien ship.\nCaption: \"And then...\"\n\nPanel 3: A silhouette appears in the opening.\nMysta: \"Who are you? Friend or foe?\"\nCaption: \"To be continued...\"",
+              "commentary": "Hopper masterfully builds suspense with this cliffhanger ending - a technique that kept readers coming back month after month.",
+              "publishedDate": "1945-07-01",
+              "comments": [],
+              "characters": ["mysta"],
+              "originalUrl": "/comics/mysta-of-the-moon-page-5/",
+              "excerpt": "Mysta faces the unknown."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

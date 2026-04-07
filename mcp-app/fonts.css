@@ -1,0 +1,10 @@
+/* =============================================================================
+   MCP APP - FONTS
+
+   This project uses system fonts for better performance and no external dependencies.
+   The font stack is defined in shared/tokens.css via --rtg-font-body variable.
+
+   System fonts used: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, etc.
+   ============================================================================= */
+
+/* No @font-face rules needed - system fonts are used */

@@ -1,0 +1,50 @@
+/**
+ * Comic Click-to-Navigate
+ * Task 18.1
+ *
+ * Click zones overlay the comic image for navigation:
+ * - Left half clicks go to previous page
+ * - Right half clicks go to next page
+ */
+
+/* Container wrapping the comic image */
+.comic-click-nav {
+  position: relative;
+  display: inline-block;
+}
+
+/* Invisible click zones overlaid on the image */
+.click-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 1;
+  text-decoration: none;
+}
+
+/* Previous (left side) */
+.click-prev {
+  left: 0;
+  cursor: w-resize;
+}
+
+/* Next (right side) */
+.click-next {
+  right: 0;
+  cursor: e-resize;
+}
+
+/* Subtle hover indicator */
+.click-zone:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* When only one direction available, make it full width */
+.comic-click-nav:not(:has(.click-prev)) .click-next {
+  width: 100%;
+}
+
+.comic-click-nav:not(:has(.click-next)) .click-prev {
+  width: 100%;
+}

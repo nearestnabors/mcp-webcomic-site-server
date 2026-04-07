@@ -1,0 +1,20 @@
+<nav class="nav_comic group">
+  {% if prevUrl %}
+  <div class="nav_comic_previous">
+    <a href="{{ prevUrl }}" class="prev" rel="prev">&larr; {{ prevTitle }}</a>
+  </div>
+  {% elif prevStorylineUrl %}
+  <div class="nav_comic_previous">
+    <a href="{{ prevStorylineUrl }}" class="prev" rel="prev">&larr; Prev: {{ prevStorylineTitle }}</a>
+  </div>
+  {% endif %}
+  {% if nextUrl %}
+  <div class="nav_comic_next">
+    <a href="{{ nextUrl }}" class="next" rel="next">{{ nextTitle }} &rarr;</a>
+  </div>
+  {% elif nextStorylineUrl %}
+  <div class="nav_comic_next">
+    <a href="{{ nextStorylineUrl }}" class="next" rel="next">Next: {{ nextStorylineTitle }} &rarr;</a>
+  </div>
+  {% endif %}
+</nav>

@@ -1,0 +1,967 @@
+/* Import shared design tokens and components */
+@import '../shared/tokens.css';
+@import '../shared/components.css';
+/* Note: System fonts used - no custom font loading needed */
+
+/* MCP App Styles - Comic Reader for iframe display */
+
+/* Base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--rtg-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  background: var(--rtg-color-bg-body);
+  color: var(--rtg-color-text-body);
+}
+
+/* Bold and italic use standard font weights */
+strong, b {
+  font-weight: 700;
+}
+
+em, i {
+  font-style: italic;
+}
+
+/* Body sizing handled by MCP Apps SDK autoResize */
+
+/* Links - site color scheme */
+a:link {
+  color: var(--rtg-color-link);
+}
+
+a:visited {
+  color: var(--rtg-color-link-visited);
+}
+
+a:hover,
+a:active,
+a:focus {
+  color: var(--rtg-color-link-hover);
+}
+
+/* =============================================================================
+   MASTHEAD HEADER
+   ============================================================================= */
+
+.masthead {
+  background: var(--rtg-color-bg-masthead);
+  color: var(--rtg-color-text-light);
+  height: var(--rtg-masthead-height-compact);
+  margin-bottom: 1rem;
+}
+
+.masthead-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--rtg-content-max-width-narrow);
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 100%;
+}
+
+/* Logo - text-based for demo */
+.masthead .logo {
+  display: flex;
+  align-items: center;
+  height: var(--rtg-masthead-height-compact);
+  color: var(--rtg-color-text-light);
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.masthead .logo:hover,
+.masthead .logo:focus {
+  color: var(--rtg-color-accent-light);
+}
+
+/* Masthead controls container */
+.masthead-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Secondary masthead buttons (Listen, Text Mode) */
+.masthead-btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: var(--rtg-color-text-light);
+  cursor: pointer;
+  font-family: var(--rtg-font-body);
+  font-size: 13px;
+  padding: 0.4rem 0.75rem;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.masthead-btn.secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.masthead-btn.secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.masthead-btn.secondary[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--rtg-color-accent);
+}
+
+/* Primary masthead button uses .rtg-button styles */
+.masthead-btn.primary {
+  font-size: 13px;
+  padding: 0.4rem 0.75rem;
+}
+
+.masthead-btn:focus {
+  outline: 2px solid var(--rtg-color-accent);
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   APP CONTAINER & VIEWS
+   ============================================================================= */
+
+/* App container */
+/* Note: Don't use min-height: 100vh - it breaks autoResize in MCP Apps iframe */
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+/* View container */
+.view {
+  flex: 1;
+  max-width: var(--rtg-content-max-width-narrow);
+  margin: 0 auto;
+  padding: 0 1rem 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================================================================
+   CONTENT HEADER (comic title area)
+   ============================================================================= */
+
+.header {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding-top: 0.5rem;
+  position: relative;
+}
+
+.header h1 {
+  margin: 0 0 0.5rem;
+  font-family: var(--rtg-font-heading);
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: var(--rtg-color-text-body);
+}
+
+.page-indicator {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* =============================================================================
+   COMIC READER
+   ============================================================================= */
+
+.reader {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.comic-container {
+  width: 100%;
+  text-align: center;
+}
+
+.comic-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* =============================================================================
+   NAVIGATION - CSS-based arrows
+   ============================================================================= */
+
+/* Screen reader only - hide visually but keep accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  border-top: 1px solid var(--rtg-color-border-light);
+}
+
+/* Navigation buttons - CSS-based arrows using border triangles */
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rtg-color-primary);
+  border: none;
+  border-radius: var(--rtg-border-radius);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: var(--rtg-color-primary-light);
+}
+
+.nav-btn:active:not(:disabled) {
+  background: var(--rtg-color-primary-dark);
+}
+
+/* CSS arrow using border triangles */
+.nav-btn .nav-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+/* Previous button - left-pointing arrow */
+.nav-btn.prev .nav-arrow {
+  border-width: 6px 10px 6px 0;
+  border-color: transparent white transparent transparent;
+  margin-right: 0.5rem;
+}
+
+/* Next button - right-pointing arrow */
+.nav-btn.next .nav-arrow {
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent white;
+  margin-left: 0.5rem;
+}
+
+.nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--rtg-color-surface);
+}
+
+.nav-btn:focus {
+  outline: 2px solid var(--rtg-color-accent);
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   TRANSCRIPT HEADING (used in text-only-transcript for markdown headers)
+   ============================================================================= */
+
+.transcript-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #444;
+  margin: 1.25rem 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.transcript-heading:first-child {
+  margin-top: 0;
+}
+
+/* =============================================================================
+   COMMENTARY SECTION
+   ============================================================================= */
+
+.commentary-section {
+  margin-top: 1rem;
+  border-top: 1px solid var(--rtg-color-border-light);
+  padding-top: 1rem;
+}
+
+.commentary-toggle {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 4px;
+  background: #fffef5;
+  color: #666;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.commentary-toggle:hover {
+  background: #f5f4e5;
+}
+
+.commentary {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fffef5;
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.commentary-content {
+  margin: 0;
+}
+
+.commentary-content p {
+  margin: 0 0 0.75rem;
+}
+
+.commentary-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* =============================================================================
+   COMMENTS SECTION
+   ============================================================================= */
+
+.comments-section {
+  margin-top: 1rem;
+  border-top: 1px solid var(--rtg-color-border-light);
+  padding-top: 1rem;
+}
+
+.comments-toggle {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 4px;
+  background: #f5f8ff;
+  color: #666;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.comments-toggle:hover {
+  background: #e8edf8;
+}
+
+.comments {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f5f8ff;
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.comments-content {
+  margin: 0;
+}
+
+.comment-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--rtg-color-border);
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.comment-text {
+  color: #555;
+  margin: 0.25rem 0 0;
+}
+
+.comment-replies {
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--rtg-color-border);
+  margin-top: 0.5rem;
+}
+
+.comment-replies .comment-item {
+  padding: 0.5rem 0;
+}
+
+/* =============================================================================
+   ERROR MESSAGE
+   ============================================================================= */
+
+.error-message {
+  padding: 1rem;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  color: #c00;
+  text-align: center;
+}
+
+/* =============================================================================
+   TTS BUTTON STATES (for masthead)
+   ============================================================================= */
+
+/* TTS button active state (when speaking) */
+.masthead-btn.secondary[aria-pressed="true"].tts-active {
+  background: #e74c3c;
+  color: #fff;
+  border-color: #c0392b;
+}
+
+.masthead-btn.secondary[aria-pressed="true"].tts-active:hover {
+  background: #c0392b;
+}
+
+/* =============================================================================
+   TEXT-ONLY CONTENT SECTION
+   ============================================================================= */
+
+.text-only-content {
+  padding: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.text-only-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.text-only-page-indicator {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rtg-color-border);
+}
+
+.text-only-transcript {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+.text-only-transcript p {
+  margin: 0 0 1rem;
+}
+
+.text-only-transcript p:last-child {
+  margin-bottom: 0;
+}
+
+.text-only-transcript .transcript-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+  margin: 1.5rem 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.text-only-transcript .transcript-heading:first-child {
+  margin-top: 0;
+}
+
+.text-only-transcript strong {
+  font-weight: 600;
+}
+
+.text-only-transcript em {
+  font-style: italic;
+  color: #555;
+}
+
+/* Text mode active state - hide image elements, show text-only content */
+.text-mode .comic-container {
+  display: none;
+}
+
+.text-mode .reader {
+  display: none;
+}
+
+.text-mode #text-only-content {
+  display: block !important;
+}
+
+/* =============================================================================
+   HIDDEN UTILITY CLASS
+   ============================================================================= */
+
+.hidden {
+  display: none !important;
+}
+
+/* =============================================================================
+   BROWSER VIEW
+   ============================================================================= */
+
+.browser {
+  padding: 1rem;
+}
+
+.browser-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.browser-header h1 {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+.back-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 4px;
+  background: #fff;
+  color: #666;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Comic list */
+.comic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.comic-item {
+  padding: 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.comic-item:hover {
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comic-item h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.comic-item p {
+  margin: 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.comic-item .meta {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* Storyline list */
+.storyline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.storyline-item {
+  padding: 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.storyline-item:hover {
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.storyline-item h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.storyline-item .meta {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* =============================================================================
+   SEARCH VIEW
+   ============================================================================= */
+
+.search {
+  padding: 1rem;
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-header h1 {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+.search-nav-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 4px;
+  background: #fff;
+  color: #666;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.search-nav-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Search form */
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.search-btn {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: #333;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background: #444;
+}
+
+/* Search results */
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.search-results-empty {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
+
+.search-result-item {
+  padding: 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-result-item:hover {
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-result-item h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.search-result-item .snippet {
+  margin: 0;
+  color: #666;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.search-result-item .match-field {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+  color: #666;
+  text-transform: capitalize;
+}
+
+/* Browser nav buttons container */
+.browser-nav-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Characters navigation button */
+.characters-nav-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 4px;
+  background: #fff;
+  color: #666;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.characters-nav-btn:hover {
+  background: #f0f0f0;
+}
+
+/* =============================================================================
+   CHARACTER VIEW
+   ============================================================================= */
+
+/* Character list */
+.character-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.characters-empty {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
+
+.character-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.character-item:hover {
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.character-thumb {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--rtg-color-border);
+  flex-shrink: 0;
+}
+
+.character-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  background-color: #999; /* fallback if inline style fails */
+}
+
+.character-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.character-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.character-divider {
+  color: #ccc;
+}
+
+.character-comic {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Character detail view */
+.character-detail {
+  padding: 0.5rem;
+}
+
+.character-name {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.character-bio {
+  margin: 0 0 1rem;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.character-detail h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Character pages list */
+.character-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.character-pages-empty {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
+
+.character-page-item {
+  padding: 1rem;
+  border: 1px solid var(--rtg-color-border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.character-page-item:hover {
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.character-page-item h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.character-page-item .meta {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* =============================================================================
+   DEBUG STATUS (hidden by default)
+   ============================================================================= */
+
+.debug-status {
+  padding: 10px;
+  background: #ffe0e0;
+  border: 1px solid #f00;
+  margin: 10px;
+  font-size: 12px;
+  font-family: var(--rtg-font-system);
+}
+
+/* =============================================================================
+   RESPONSIVE STYLES
+   ============================================================================= */
+
+@media (max-width: 600px) {
+  .app {
+    padding: 0.5rem;
+  }
+
+  .header h1 {
+    font-size: 1rem;
+  }
+
+  /* Scale down nav buttons on small screens */
+  .nav-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (min-width: 800px) {
+  .comic-image {
+    max-width: 700px;
+  }
+}

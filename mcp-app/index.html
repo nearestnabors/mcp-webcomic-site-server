@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webcomic Reader</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Masthead Header -->
+    <header class="masthead">
+      <div class="masthead-inner">
+        <span class="logo" title="Comic Archive">
+          Comic Archive
+        </span>
+        <div class="masthead-controls">
+          <button id="tts-btn" class="masthead-btn secondary" aria-label="Listen to transcript" aria-pressed="false" disabled>
+            🔊 Listen
+          </button>
+          <button id="text-mode-btn" class="masthead-btn secondary" aria-pressed="false">
+            Text Mode
+          </button>
+          <button id="header-nav-btn" class="masthead-btn primary rtg-button">Browse more comics</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Reader View -->
+    <div id="reader-view" class="view">
+      <header class="header">
+        <h1 id="comic-title">Loading...</h1>
+        <div id="page-indicator" class="page-indicator">Page - of -</div>
+      </header>
+
+      <main class="reader">
+        <div id="comic-container" class="comic-container">
+          <img id="comic-image" class="comic-image" src="" alt="">
+        </div>
+      </main>
+
+      <!-- Text-only content section (shown when in text mode) -->
+      <div id="text-only-content" class="text-only-content" hidden>
+        <h2 id="text-only-title" class="text-only-title"></h2>
+        <div id="text-only-page-indicator" class="text-only-page-indicator"></div>
+        <div id="text-only-transcript" class="text-only-transcript"></div>
+      </div>
+
+      <nav id="nav" class="nav">
+        <button id="prev-btn" class="nav-btn prev" disabled>
+          <span class="nav-arrow"></span>
+          <span class="sr-only">Previous</span>
+        </button>
+        <button id="next-btn" class="nav-btn next" disabled>
+          <span class="nav-arrow"></span>
+          <span class="sr-only">Next</span>
+        </button>
+      </nav>
+
+      <section id="commentary-section" class="commentary-section">
+        <button id="commentary-toggle" class="commentary-toggle">
+          Show Commentary
+        </button>
+        <div id="commentary" class="commentary" hidden>
+          <div id="commentary-content"></div>
+        </div>
+      </section>
+
+      <section id="comments-section" class="comments-section">
+        <button id="comments-toggle" class="comments-toggle">
+          Show Comments
+        </button>
+        <div id="comments" class="comments" hidden>
+          <div id="comments-content"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Browser View -->
+    <div id="browser-view" class="view browser hidden">
+      <header class="header browser-header">
+        <button id="back-btn" class="back-btn hidden">&larr; Back</button>
+        <h1 id="browser-title">Comics</h1>
+        <div class="browser-nav-btns">
+          <button id="characters-nav-btn" class="characters-nav-btn">Characters</button>
+          <button id="search-nav-btn" class="search-nav-btn">Search</button>
+        </div>
+      </header>
+
+      <div id="comic-list" class="comic-list">
+        <!-- Comics populated by JavaScript -->
+      </div>
+
+      <div id="storyline-list" class="storyline-list hidden">
+        <!-- Storylines populated by JavaScript -->
+      </div>
+
+      <div id="character-list" class="character-list hidden">
+        <!-- Characters populated by JavaScript -->
+      </div>
+
+      <div id="character-detail" class="character-detail hidden">
+        <h2 id="character-name" class="character-name"></h2>
+        <p id="character-bio" class="character-bio"></p>
+        <h3>Appears in:</h3>
+        <div id="character-pages" class="character-pages">
+          <!-- Pages featuring this character populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Search View -->
+    <div id="search-view" class="view search hidden">
+      <header class="header search-header">
+        <button id="search-back-btn" class="back-btn">&larr; Back</button>
+        <h1>Search Comics</h1>
+      </header>
+
+      <div class="search-form">
+        <input type="search" id="search-input" class="search-input" placeholder="Search transcripts, titles, commentary...">
+        <button id="search-btn" class="search-btn">Search</button>
+      </div>
+
+      <div id="search-results" class="search-results">
+        <!-- Search results populated by JavaScript -->
+      </div>
+    </div>
+
+    <div id="error-message" class="error-message" hidden></div>
+
+    <!-- Debug status for MCP App connection (hidden by default, add ?debug=true to show) -->
+    <div id="debug-status" class="debug-status" hidden>
+      Status: Initializing...
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

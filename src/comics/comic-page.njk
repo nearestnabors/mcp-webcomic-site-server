@@ -1,0 +1,9 @@
+---
+pagination:
+  data: pages
+  size: 1
+  alias: comicPage
+permalink: "/comics/{{ comicPage.slug }}/"
+---
+{# Variables are computed via eleventyComputed in comics.11tydata.js #}
+{# This template's content becomes available to the layout #}

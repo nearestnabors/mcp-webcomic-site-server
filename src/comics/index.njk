@@ -1,0 +1,59 @@
+---
+title: Comics Archive
+pagination:
+  data: collections.allStorylines
+  size: 10
+  alias: storylines
+  reverse: false
+permalink: "{% if pagination.pageNumber == 0 %}/comics/{% else %}/comics/page/{{ pagination.pageNumber + 1 }}/{% endif %}"
+layout: false
+---
+{% extends "base.njk" %}
+
+{# Get first comic data for description #}
+{% set comic = manifest.comics[0] %}
+{% set description = comic.description %}
+{% set basePath = "/comics/" %}
+{% set allStorylines = comic.storylines %}
+
+{% block content %}
+  <header>
+    <hgroup>
+      <h1>{{ title }}</h1>
+      {% if description %}
+      <div class="intro">{{ description | markdown | safe }}</div>
+      {% endif %}
+      <h2>Latest Comics</h2>
+    </hgroup>
+  </header>
+
+  <div class="archive-grid">
+  {% for storyline in pagination.items %}
+  <article class="comic_listing">
+    <h2><a href="{{ basePath }}{{ storyline.pages[0].slug }}/">{{ storyline.title }}</a></h2>
+    {% if storyline.thumbnail %}
+    <a href="{{ basePath }}{{ storyline.pages[0].slug }}/">
+      <img src="/{{ storyline.thumbnail }}" alt="{{ storyline.title }}" width="88" height="88" class="alignnone size-thumbnail" loading="lazy">
+    </a>
+    {% endif %}
+    {% if storyline.description %}
+    <p>{{ storyline.description }}</p>
+    {% endif %}
+    <p class="b_read-comic">
+      <a class="button" href="{{ basePath }}{{ storyline.pages[0].slug }}/">Read the comic</a>
+    </p>
+  </article>
+  {% endfor %}
+  </div>
+
+  {% include "archive-pagination.njk" %}
+{% endblock %}
+
+{% block webmcp %}
+{% include "webmcp-archive.njk" %}
+{% endblock %}
+
+{% block sidebar %}
+{% set firstPageUrl = basePath + (allStorylines | last).pages[0].slug + "/" %}
+{% include "sidebar-comics.njk" %}
+{% endblock %}

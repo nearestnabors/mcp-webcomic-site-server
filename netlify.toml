@@ -1,0 +1,70 @@
+# Netlify Configuration for MCP Webcomic Site Server
+# A template for building MCP-enabled webcomic archives
+
+[build]
+  command = "npm run build:all"
+  publish = "_site"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Functions configuration
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["src/_data/**", "mcp-app/dist/**", "mcp-app-minimal/dist/**"]
+
+# Cache static assets for better performance
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/pagefind/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Security headers for all pages
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# MCP Server endpoint redirect
+[[redirects]]
+  from = "/mcp"
+  to = "/.netlify/functions/mcp"
+  status = 200
+
+[[redirects]]
+  from = "/mcp/*"
+  to = "/.netlify/functions/mcp"
+  status = 200
+
+# CORS headers for MCP function endpoint
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type, Accept"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+
+# 404 fallback - return 404 page for unknown routes
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

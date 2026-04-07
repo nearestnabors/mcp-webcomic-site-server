@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+_site/
+dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Netlify
+.netlify/
+
+# Generated files
+netlify/functions/embedded-apps.ts
+
+# Temporary
+*.tmp
+*.bak

@@ -1,0 +1,32 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<article class="storyline-index">
+  <header>
+    <h1>{{ title }}</h1>
+    {% if description %}
+    <p class="description">{{ description }}</p>
+    {% endif %}
+  </header>
+
+  <div class="page-grid">
+    {% for page in pages %}
+    <div class="page-thumb">
+      <a href="/comics/{{ page.slug }}/">
+        <img src="/{{ page.image }}" alt="{{ page.title }}" loading="lazy">
+        <span class="page-title">{{ page.title }}</span>
+        {% if page.excerpt %}
+        <span class="page-excerpt">{{ page.excerpt }}</span>
+        {% endif %}
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <p><a href="/comics/{{ pages[0].slug }}/" class="button">Start Reading</a></p>
+</article>
+{% endblock %}
+
+{% block sidebar %}
+{% include "sidebar-comics.njk" %}
+{% endblock %}

@@ -1,0 +1,127 @@
+{# WebMCP Comic Page - Tools for comic pages with transcripts and images
+   Tools: list_comics, search_comics (from base)
+          + get_current_page, get_transcript, get_image_url, first_page
+          + prev_page (if prevUrl or prevStorylineUrl exists)
+          + next_page (if nextUrl or nextStorylineUrl exists)
+
+   Required variables: comic_id, storyline_id, pageNumber, title, transcript,
+                       prevUrl, nextUrl, prevStorylineUrl, nextStorylineUrl, image, firstPageUrl
+#}
+{% include "webmcp-base.njk" %}
+
+{# Compute effective prev/next URLs including inter-storyline navigation #}
+{% set effectivePrevUrl = prevUrl or prevStorylineUrl %}
+{% set effectiveNextUrl = nextUrl or nextStorylineUrl %}
+
+<script>
+(function() {
+  'use strict';
+
+  if (!('modelContext' in navigator)) {
+    return;
+  }
+
+  // Embedded page data (built at compile time)
+  const pageData = {{ {
+    comic_id: comic_id,
+    storyline_id: storyline_id,
+    page_number: pageNumber,
+    title: title,
+    transcript: transcript or "",
+    image_url: "/" + image
+  } | dump | safe }};
+
+  // Tool: get_current_page
+  navigator.modelContext.registerTool({
+    name: 'get_current_page',
+    description: 'Get data about the comic page currently being viewed, including comic_id, storyline_id, page_number, title, and transcript',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => pageData
+  });
+
+  // Tool: get_transcript
+  navigator.modelContext.registerTool({
+    name: 'get_transcript',
+    description: 'Get the transcript text of the current comic page for accessibility or text-to-speech',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => ({
+      title: pageData.title,
+      transcript: pageData.transcript || 'No transcript available for this page.'
+    })
+  });
+
+  // Tool: get_image_url
+  navigator.modelContext.registerTool({
+    name: 'get_image_url',
+    description: 'Get the URL of the comic image on the current page',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => ({
+      image_url: window.location.origin + pageData.image_url,
+      alt_text: pageData.title
+    })
+  });
+
+  // Tool: first_page - navigate to the beginning of the current storyline
+  navigator.modelContext.registerTool({
+    name: 'first_page',
+    description: 'Navigate to the first page of the current storyline to start reading from the beginning',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => {
+      window.location.href = {{ firstPageUrl | dump | safe }};
+      return { success: true, navigating_to: {{ firstPageUrl | dump | safe }} };
+    }
+  });
+
+  {% if effectivePrevUrl %}
+  // Tool: prev_page (includes inter-storyline navigation)
+  navigator.modelContext.registerTool({
+    name: 'prev_page',
+    description: 'Navigate to the previous comic page in the sequence{% if prevStorylineUrl and not prevUrl %} (previous storyline){% endif %}',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => {
+      window.location.href = {{ effectivePrevUrl | dump | safe }};
+      return { success: true, navigating_to: {{ effectivePrevUrl | dump | safe }} };
+    }
+  });
+  {% endif %}
+
+  {% if effectiveNextUrl %}
+  // Tool: next_page (includes inter-storyline navigation)
+  navigator.modelContext.registerTool({
+    name: 'next_page',
+    description: 'Navigate to the next comic page in the sequence{% if nextStorylineUrl and not nextUrl %} (next storyline){% endif %}',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    },
+    execute: async () => {
+      window.location.href = {{ effectiveNextUrl | dump | safe }};
+      return { success: true, navigating_to: {{ effectiveNextUrl | dump | safe }} };
+    }
+  });
+  {% endif %}
+
+  console.log('WebMCP: comic page tools registered (get_current_page, get_transcript, get_image_url, first_page{% if effectivePrevUrl %}, prev_page{% endif %}{% if effectiveNextUrl %}, next_page{% endif %})');
+})();
+</script>

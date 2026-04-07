@@ -1,0 +1,30 @@
+{# Character sidebar partial - displays "Cast" section with character thumbnails #}
+{# Expects comicId variable to filter characters by comic series #}
+{# Crow Princess is intentionally excluded (no spoilers!) #}
+{# Characters without thumbnails show as text links (e.g., olivia-bryce characters) #}
+
+{% set comicCharacters = [] %}
+{% for slug, char in characters %}
+  {% if char.comicId == comicId %}
+    {% set comicCharacters = (comicCharacters.push(char), comicCharacters) %}
+  {% endif %}
+{% endfor %}
+
+{% if comicCharacters.length > 0 %}
+<nav class="cast">
+  <h3>Cast</h3>
+  <ul class="group">
+    {% for char in comicCharacters %}
+    <li>
+      <a href="/comics_characters/{{ char.slug }}/">
+        {% if char.thumbnailPath | fileExists %}
+        <img src="/{{ char.thumbnailPath }}" alt="{{ char.thumbnailAlt or char.name }}" />
+        {% else %}
+        <span class="character-name">{{ char.name }}</span>
+        {% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}

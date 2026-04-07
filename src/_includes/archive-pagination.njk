@@ -1,0 +1,20 @@
+{# Archive pagination navigation
+   Matches original WordPress markup:
+   <nav class="group nav_comic-archive">
+     <div class="nav_previous"><a href="...">&laquo; Older Comics</a></div>
+     <div class="nav_next"><a href="...">Newer Comics &raquo;</a></div>
+   </nav>
+
+   Note: "Older" goes to higher page numbers (older storylines are later in the list)
+         "Newer" goes to lower page numbers (newer storylines are first)
+#}
+{% if pagination.href.previous or pagination.href.next %}
+<nav class="group nav_comic-archive">
+  {% if pagination.href.next %}
+  <div class="nav_previous"><a href="{{ pagination.href.next }}">&laquo; Older Comics</a></div>
+  {% endif %}
+  {% if pagination.href.previous %}
+  <div class="nav_next"><a href="{{ pagination.href.previous }}">Newer Comics &raquo;</a></div>
+  {% endif %}
+</nav>
+{% endif %}

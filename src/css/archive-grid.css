@@ -1,0 +1,55 @@
+/* Archive 2-Up Grid Layout
+   Task 18.7 - Display comic archive in 2-column grid on desktop
+   ================================================================ */
+
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+/* Override float-based layout from styles-min.css */
+.archive-grid .comic_listing {
+    box-sizing: border-box;
+    float: none;
+    width: 100%;
+    height: auto;
+    min-height: 190px;
+}
+
+/* Mobile: Single column when viewport is narrow */
+@media screen and (max-width: 600px) {
+    .archive-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Bio/Character Pages: Flexbox layout for post_mini items
+   Replaces float-based layout from styles-min.css
+   ================================================================ */
+
+.archive .post_mini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: flex-start;
+}
+
+/* Override floats with flexbox */
+.archive .post_mini .wp-post-image {
+    float: none;
+    flex-shrink: 0;
+}
+
+.archive .post_mini .accompany {
+    float: none;
+    width: auto;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Header spans full width above image and content */
+.archive .post_mini header {
+    flex-basis: 100%;
+}

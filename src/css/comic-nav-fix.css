@@ -1,0 +1,64 @@
+/**
+ * Comic Navigation Button Positioning Fix
+ *
+ * Task: 18.6
+ * PRD items: 18.6.1-18.6.4
+ *
+ * Problem: The original CSS positions .nav_comic absolutely with sprite
+ * backgrounds for arrow images. This doesn't work well with text-based
+ * navigation links on desktop.
+ *
+ * Solution: Override the old styles to use flexbox with justify-content:
+ * space-between, placing prev on the left and next on the right edge.
+ */
+
+/* Override the old absolute positioning with flexbox */
+.nav_comic {
+  position: static;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 650px;
+  margin: 1em auto;
+  padding: 0.5em 0;
+}
+
+/* Override the old sprite background styles for nav links */
+.nav_comic a {
+  background: none;
+  display: inline-block;
+  height: auto;
+  width: auto;
+  overflow: visible;
+  text-indent: 0;
+  color: #0097c0;
+  padding: 0.5em 1em;
+  border: 1px solid #81a8b2;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover/focus states */
+.nav_comic a:hover,
+.nav_comic a:focus {
+  background: #0097c0;
+  color: #fff;
+  position: static; /* Override the position: relative from old styles */
+}
+
+/* Reset the old float-based positioning on child containers */
+.nav_comic_previous,
+.nav_comic_next {
+  float: none;
+}
+
+/* When only one nav direction exists, use margin-auto to position correctly */
+.nav_comic_previous:only-child {
+  margin-right: auto;
+}
+
+.nav_comic_next:only-child {
+  margin-left: auto;
+}
