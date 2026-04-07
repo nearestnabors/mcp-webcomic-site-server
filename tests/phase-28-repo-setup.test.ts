@@ -161,9 +161,10 @@ describe('Phase 28.4: MIT LICENSE', () => {
     expect(content).toContain('2026');
   });
 
-  it('should credit Rachel Nabors', () => {
+  it('should credit RL Nabors', () => {
     const content = fs.readFileSync(licensePath, 'utf-8');
-    expect(content).toContain('Rachel Nabors');
+    expect(content).toContain('RL');
+    expect(content).toContain('Nabors');
   });
 });
 

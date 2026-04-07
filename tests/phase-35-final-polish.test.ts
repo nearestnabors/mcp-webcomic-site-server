@@ -100,9 +100,9 @@ describe('Phase 35: Final Polish & README', () => {
       expect(pkg.license).toBe('MIT');
     });
 
-    it('author is Rachel Nabors', () => {
+    it('author is RL Nabors', () => {
       const pkg = JSON.parse(readFileSync(packagePath, 'utf-8'));
-      expect(pkg.author).toBe('Rachel Nabors');
+      expect(pkg.author).toBe('RL Nabors');
     });
 
     it('has repository URL pointing to nearestnabors', () => {

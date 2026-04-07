@@ -1,0 +1,89 @@
+---
+title: Search
+permalink: /search/
+---
+{% extends "base.njk" %}
+
+{% block content %}
+<section role="main">
+  <header>
+    <h1>Search</h1>
+    <div class="search-form-container">
+      <form id="search-form" action="/search/" method="get" class="search-form">
+        <input type="search" id="search-input" name="q" placeholder="Search comics..." autocomplete="off" />
+        <button type="submit" class="button">Search</button>
+      </form>
+    </div>
+  </header>
+
+  <div id="search-loading" class="search-loading" hidden>
+    <p>Searching...</p>
+  </div>
+
+  <div id="search-results" class="archive-list"></div>
+</section>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('q');
+  const input = document.getElementById('search-input');
+  const resultsContainer = document.getElementById('search-results');
+  const loadingIndicator = document.getElementById('search-loading');
+  const form = document.getElementById('search-form');
+
+  // XSS protection helper
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Show loading on form submit
+  form.addEventListener('submit', function() {
+    loadingIndicator.hidden = false;
+    resultsContainer.innerHTML = '';
+  });
+
+  if (query) {
+    input.value = query;
+    loadingIndicator.hidden = false;
+
+    try {
+      // Load Pagefind
+      const pagefind = await import('/pagefind/pagefind.js');
+      await pagefind.init();
+
+      const search = await pagefind.search(query);
+      loadingIndicator.hidden = true;
+
+      if (search.results.length === 0) {
+        resultsContainer.innerHTML = '<p class="no-results">No results found for "' + escapeHtml(query) + '"</p>';
+        return;
+      }
+
+      let html = '';
+      for (const result of search.results.slice(0, 20)) {
+        const data = await result.data();
+        const title = data.meta?.title || 'Untitled';
+        html += '<li>';
+        html += '<h2><a href="' + escapeHtml(data.url) + '">' + escapeHtml(title) + '</a></h2>';
+        html += '<p>' + data.excerpt + '</p>';
+        html += '</li>';
+      }
+
+      resultsContainer.innerHTML = html;
+    } catch (error) {
+      loadingIndicator.hidden = true;
+      resultsContainer.innerHTML = '<p class="search-error">Search is not available in dev mode. Run a full build first.</p>';
+      console.error('Search error:', error);
+    }
+  }
+});
+</script>
+{% endblock %}

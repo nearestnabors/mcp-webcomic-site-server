@@ -12,42 +12,35 @@ layout: false
 
 {% block content %}
 <section>
-  <h1>Welcome to the Comic Archive</h1>
+  <h1>Latest Comics</h1>
   <p class="intro">This is a demo site showing how to build an MCP-enabled webcomic archive. Comics can be read by humans in the browser, or by AI agents via MCP tools.</p>
 
-  <h2>Featured Comics</h2>
-  <ul class="featured-comics group">
-    {% for comic in manifest.comics %}
+  <ul class="archive-list">
+  {% for comic in manifest.comics %}
+    {% for storyline in comic.storylines %}
     <li>
-      <a href="/comics/">
-        <h3>{{ comic.title }}</h3>
-        {% if comic.coverImage %}
-        <img src="/{{ comic.coverImage }}" alt="{{ comic.title }}" width="210" height="300" />
-        {% else %}
-        <div class="placeholder-cover">
-          <span>{{ comic.title }}</span>
-        </div>
-        {% endif %}
-        <p>{{ comic.storylines.length }} storylines</p>
-      </a>
+      <h2><a href="/comics/{{ storyline.pages[0].slug }}/">{{ storyline.title }}</a></h2>
+      {% if storyline.description %}
+      <p>{{ storyline.description }}</p>
+      {% endif %}
     </li>
     {% endfor %}
+  {% endfor %}
   </ul>
-
-  <p class="cta">
-    <a href="/comics/" class="button">Browse All Comics</a>
-  </p>
 </section>
 
-<section>
+<section class="about-section">
   <h2>About This Site</h2>
   <p>This site demonstrates the "three surfaces" architecture:</p>
-  <ol>
-    <li><strong>Static Website</strong> — HTML pages you're reading now</li>
-    <li><strong>MCP Server</strong> — AI agents can read comics via structured tools</li>
-    <li><strong>WebMCP</strong> — Browser-based agents can interact with this page</li>
-  </ol>
-  <p><a href="/about/">Learn more about this project</a></p>
+  <dl class="features-list">
+    <dt>Static Website</dt>
+    <dd>HTML pages you're reading now</dd>
+    <dt>MCP Server</dt>
+    <dd>AI agents can read comics via structured tools</dd>
+    <dt>WebMCP</dt>
+    <dd>Browser-based agents can interact with this page</dd>
+  </dl>
+  <p><a href="/about/" class="button">Learn More About This Project</a></p>
 </section>
 {% endblock %}
 
@@ -60,8 +53,4 @@ layout: false
     <li><a href="/search/">Search</a></li>
   </ul>
 </section>
-{% endblock %}
-
-{% block extendedFooter %}
-{% include "footer-home.njk" %}
 {% endblock %}

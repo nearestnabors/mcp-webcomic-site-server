@@ -1,0 +1,52 @@
+---
+pagination:
+  data: characterPages
+  size: 1
+  alias: character
+permalink: "/comics_characters/{{ character.slug }}/"
+---
+{% extends "base.njk" %}
+
+{% block title %}Comics Starring {{ character.name }}{% endblock %}
+
+{% block content %}
+<header>
+  <h1>Comics Starring {{ character.name }}</h1>
+  {% if character.bio %}
+  <div class="intro">
+    <p>{{ character.bio }}</p>
+  </div>
+  {% endif %}
+</header>
+
+{% set charSlug = character.slug %}
+{% set comicsFound = [] %}
+{% for comic in manifest.comics %}
+  {% for storyline in comic.storylines %}
+    {% for page in storyline.pages %}
+      {% if page.characters and charSlug in page.characters %}
+        {% set comicsFound = (comicsFound.push({slug: page.slug, title: page.title, alt: page.alt}), comicsFound) %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
+
+{% if comicsFound.length > 0 %}
+<ul class="archive-list">
+{% for page in comicsFound %}
+  <li>
+    <h2><a href="/comics/{{ page.slug }}/">{{ page.title }}</a></h2>
+    {% if page.alt %}
+    <p>{{ page.alt }}</p>
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No comic pages found featuring this character.</p>
+{% endif %}
+{% endblock %}
+
+{% block sidebar %}
+{% include "sidebar-comics.njk" %}
+{% endblock %}

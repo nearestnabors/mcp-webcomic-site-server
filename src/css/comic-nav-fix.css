@@ -18,32 +18,35 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 650px;
+  width: 650px;
   margin: 1em auto;
-  padding: 0.5em 0;
+  padding: 0;
+}
+
+/* Remove clearfix pseudo-element that interferes with flexbox */
+.nav_comic.group:after {
+  display: none;
 }
 
 /* Override the old sprite background styles for nav links */
 .nav_comic a {
-  background: none;
+  background: #2563eb;
   display: inline-block;
   height: auto;
   width: auto;
   overflow: visible;
   text-indent: 0;
-  color: #0097c0;
-  padding: 0.5em 1em;
-  border: 1px solid #81a8b2;
-  border-radius: 4px;
+  color: #fff;
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 0;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Hover/focus states */
 .nav_comic a:hover,
 .nav_comic a:focus {
-  background: #0097c0;
+  background: #1d4ed8;
   color: #fff;
   position: static; /* Override the position: relative from old styles */
 }
@@ -52,6 +55,8 @@
 .nav_comic_previous,
 .nav_comic_next {
   float: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* When only one nav direction exists, use margin-auto to position correctly */
@@ -61,4 +66,11 @@
 
 .nav_comic_next:only-child {
   margin-left: auto;
+}
+
+/* Ensure links don't have old fixed widths */
+.nav_comic_previous a,
+.nav_comic_next a {
+  width: auto;
+  height: auto;
 }

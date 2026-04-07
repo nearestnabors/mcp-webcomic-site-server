@@ -267,7 +267,7 @@ Framework code is MIT licensed. Sample comic content (Fran Hopper's work) is in 
 
 ## Credits
 
-- Framework created by [Rachel Nabors](https://rachelnabors.com)
+- Framework created by [RL Nabors](https://nearestnabors.com)
 - Sample content from Fran Hopper (public domain, via Digital Comic Museum)
 - Built with [11ty](https://www.11ty.dev/), [MCP SDK](https://modelcontextprotocol.io/), and [Pagefind](https://pagefind.app/)
 

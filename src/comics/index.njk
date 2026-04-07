@@ -18,33 +18,22 @@ layout: false
 
 {% block content %}
   <header>
-    <hgroup>
-      <h1>{{ title }}</h1>
-      {% if description %}
-      <div class="intro">{{ description | markdown | safe }}</div>
-      {% endif %}
-      <h2>Latest Comics</h2>
-    </hgroup>
+    <h1>Latest Comics</h1>
+    {% if description %}
+    <div class="intro">{{ description | markdown | safe }}</div>
+    {% endif %}
   </header>
 
-  <div class="archive-grid">
+  <ul class="archive-list">
   {% for storyline in pagination.items %}
-  <article class="comic_listing">
-    <h2><a href="{{ basePath }}{{ storyline.pages[0].slug }}/">{{ storyline.title }}</a></h2>
-    {% if storyline.thumbnail %}
-    <a href="{{ basePath }}{{ storyline.pages[0].slug }}/">
-      <img src="/{{ storyline.thumbnail }}" alt="{{ storyline.title }}" width="88" height="88" class="alignnone size-thumbnail" loading="lazy">
-    </a>
-    {% endif %}
-    {% if storyline.description %}
-    <p>{{ storyline.description }}</p>
-    {% endif %}
-    <p class="b_read-comic">
-      <a class="button" href="{{ basePath }}{{ storyline.pages[0].slug }}/">Read the comic</a>
-    </p>
-  </article>
+    <li>
+      <h2><a href="{{ basePath }}{{ storyline.pages[0].slug }}/">{{ storyline.title }}</a></h2>
+      {% if storyline.description %}
+      <p>{{ storyline.description }}</p>
+      {% endif %}
+    </li>
   {% endfor %}
-  </div>
+  </ul>
 
   {% include "archive-pagination.njk" %}
 {% endblock %}
