@@ -40,11 +40,9 @@
   background: rgba(0, 0, 0, 0.03);
 }
 
-/* When only one direction available, make it full width */
-.comic-click-nav:not(:has(.click-prev)) .click-next {
-  width: 100%;
-}
-
-.comic-click-nav:not(:has(.click-next)) .click-prev {
-  width: 100%;
-}
+/*
+ * When only one direction available, keep zones at 50% width.
+ * This prevents unexpected navigation when clicking the "wrong" side.
+ * Users expect: click right = next, click left = prev.
+ * If no next page exists, clicking right should do nothing.
+ */
