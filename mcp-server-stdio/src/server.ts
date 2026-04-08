@@ -24,27 +24,11 @@ const __dirname = dirname(__filename);
 
 // UI Resource URIs
 const UI_RESOURCES = {
-  hello: "ui://rtg-comics/hello.html",
   reader: "ui://rtg-comics/reader.html",
 };
 
 // Tool definitions with UI metadata
 const TOOLS: Tool[] = [
-  {
-    name: "hello_comic",
-    description:
-      "Test MCP App - displays a simple hello message in an interactive UI.",
-    inputSchema: {
-      type: "object",
-      properties: {},
-      required: [],
-    },
-    _meta: {
-      ui: {
-        resourceUri: UI_RESOURCES.hello,
-      },
-    },
-  },
   {
     name: "list_comics",
     description: "Get a list of all available comics in the archive.",
@@ -76,20 +60,6 @@ const TOOLS: Tool[] = [
 ];
 
 // Tool handlers
-async function helloComicHandler(): Promise<CallToolResult> {
-  return {
-    content: [
-      {
-        type: "text",
-        text: JSON.stringify({
-          message: "Hello from RTG Comics!",
-          timestamp: new Date().toISOString(),
-        }),
-      },
-    ],
-  };
-}
-
 async function listComicsHandler(): Promise<CallToolResult> {
   return {
     content: [
@@ -188,11 +158,6 @@ export function createServer(): Server {
     return {
       resources: [
         {
-          uri: UI_RESOURCES.hello,
-          name: "Hello Comic UI",
-          mimeType: RESOURCE_MIME_TYPE,
-        },
-        {
           uri: UI_RESOURCES.reader,
           name: "Comic Reader UI",
           mimeType: RESOURCE_MIME_TYPE,
@@ -207,7 +172,6 @@ export function createServer(): Server {
 
     // Map URI to filename
     const uriToFile: Record<string, string> = {
-      [UI_RESOURCES.hello]: "hello.html",
       [UI_RESOURCES.reader]: "reader.html",
     };
 
@@ -236,8 +200,6 @@ export function createServer(): Server {
     const { name, arguments: args } = request.params;
 
     switch (name) {
-      case "hello_comic":
-        return await helloComicHandler();
       case "list_comics":
         return await listComicsHandler();
       case "get_page":
