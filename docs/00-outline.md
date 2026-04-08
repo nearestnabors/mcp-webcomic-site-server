@@ -72,6 +72,7 @@ This tutorial covers how to build a webcomic archive that serves content to both
 | `05-mcp-apps-anatomy.md` | How MCP Apps work, bundling, registration |
 | `06-webmcp-anatomy.md` | WebMCP API, tool registration, templates |
 | `07-text-vs-data-vs-ui.md` | Return type decision framework |
+| `08-radio-plays.md` | Audio features: TTS and dramatic reading |
 
 ---
 

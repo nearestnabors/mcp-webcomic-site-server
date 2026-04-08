@@ -103,6 +103,8 @@ case 'resources/list':
 
 Prompts are **pre-built experiences** that users can invoke directly. Unlike tools (which agents decide to call), prompts are user-initiated and provide guided workflows for complex tasks.
 
+> **Note:** As of early 2025, Claude Desktop doesn't yet surface MCP prompts in its `/` command picker. The prompts are implemented and ready for when support arrives.
+
 **Characteristics:**
 - User-initiated (user selects from a list)
 - Returns a message for the AI to process
