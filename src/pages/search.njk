@@ -9,8 +9,17 @@ permalink: /search/
   <header>
     <h1>Search</h1>
     <div class="search-form-container">
-      <form id="search-form" action="/search/" method="get" class="search-form">
-        <input type="search" id="search-input" name="q" placeholder="Search comics..." autocomplete="off" />
+      <form id="search-form" action="/search/" method="get" class="search-form"
+            data-mcp-tool="search_comics"
+            data-mcp-description="Search comic transcripts and commentary for matching content. Returns page titles, URLs, and excerpts.">
+        <input type="search"
+               id="search-input"
+               name="q"
+               data-mcp-param="query"
+               data-mcp-description="The search query to find in comic transcripts and commentary"
+               data-mcp-required="true"
+               placeholder="Search comics..."
+               autocomplete="off" />
         <button type="submit" class="button">Search</button>
       </form>
     </div>
