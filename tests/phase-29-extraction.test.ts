@@ -637,52 +637,6 @@ describe('Phase 29.6: MCP Server', () => {
     });
   });
 
-  describe('mcp-server-stdio directory', () => {
-    const mcpStdioDir = path.join(ROOT, 'mcp-server-stdio');
-
-    it('should have mcp-server-stdio/src directory', () => {
-      const srcDir = path.join(mcpStdioDir, 'src');
-      expect(fs.existsSync(srcDir), 'mcp-server-stdio/src/ should exist').toBe(true);
-    });
-
-    it('should have mcp-server-stdio/src/index.ts', () => {
-      const filePath = path.join(mcpStdioDir, 'src/index.ts');
-      expect(fs.existsSync(filePath), 'mcp-server-stdio/src/index.ts should exist').toBe(true);
-    });
-
-    it('should have mcp-server-stdio/src/server.ts', () => {
-      const filePath = path.join(mcpStdioDir, 'src/server.ts');
-      expect(fs.existsSync(filePath), 'mcp-server-stdio/src/server.ts should exist').toBe(true);
-    });
-
-    it('server.ts should import MCP SDK', () => {
-      const filePath = path.join(mcpStdioDir, 'src/server.ts');
-      if (!fs.existsSync(filePath)) {
-        expect.fail('server.ts does not exist');
-      }
-      const content = fs.readFileSync(filePath, 'utf-8');
-      expect(content).toContain('@modelcontextprotocol/sdk');
-    });
-
-    it('index.ts should use stdio transport', () => {
-      const filePath = path.join(mcpStdioDir, 'src/index.ts');
-      if (!fs.existsSync(filePath)) {
-        expect.fail('index.ts does not exist');
-      }
-      const content = fs.readFileSync(filePath, 'utf-8');
-      expect(content).toContain('StdioServerTransport');
-    });
-
-    it('should have mcp-server-stdio/package.json', () => {
-      const filePath = path.join(mcpStdioDir, 'package.json');
-      expect(fs.existsSync(filePath), 'mcp-server-stdio/package.json should exist').toBe(true);
-    });
-
-    it('should have mcp-server-stdio/tsconfig.json', () => {
-      const filePath = path.join(mcpStdioDir, 'tsconfig.json');
-      expect(fs.existsSync(filePath), 'mcp-server-stdio/tsconfig.json should exist').toBe(true);
-    });
-  });
 });
 
 describe('Phase 29.8: Netlify Function', () => {

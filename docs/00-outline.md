@@ -15,17 +15,25 @@ This tutorial covers how to build a webcomic archive that serves content to both
 - Architecture diagram showing single source of truth
 - Three rendering surfaces: Static Site, MCP Server + App, WebMCP
 
-## MCP Transports: HTTP vs Stdio
+## MCP HTTP Transport
 
 **Technical file:** `03-http-vs-stdio.md`
-- Stdio transport: local process, stdin/stdout communication
 - HTTP transport: web service, JSON-RPC over HTTP
-- Comparison table: when to use which
-- Implementation tips for both transports
+- Connecting AI agents via MCP Connectors
+- Local development with Netlify Dev (`http://localhost:8888/mcp`)
+- Implementation tips: CORS, health checks, serverless limitations
+
+## Tools, Resources, and Templates
+
+**Technical file:** `04-tools-resources-templates.md`
+- Difference between MCP Tools, MCP Resources, and Nunjucks Templates
+- When agents call tools vs read resources
+- WebMCP tool registration in templates
+- What's implemented in this template
 
 ## The MCP App Comic Browser
 
-**Technical file:** `04-mcp-apps-anatomy.md`
+**Technical file:** `05-mcp-apps-anatomy.md`
 - Demo: Reading comics inside AI interfaces (Claude, ChatGPT)
 - Anatomy of an MCP App
   - Communication protocol (`app.connect()`, `app.ontoolresult`, `app.callServerTool()`)
@@ -35,7 +43,7 @@ This tutorial covers how to build a webcomic archive that serves content to both
 
 ## Navigating the Web with WebMCP
 
-**Technical file:** `05-webmcp-anatomy.md`
+**Technical file:** `06-webmcp-anatomy.md`
 - Demo: Using WebMCP to navigate forward/backward
 - Anatomy of WebMCP
   - `navigator.modelContext.registerTool()`
@@ -45,7 +53,7 @@ This tutorial covers how to build a webcomic archive that serves content to both
 
 ## Text vs. Data vs. UI
 
-**Technical file:** `06-text-vs-data-vs-ui.md`
+**Technical file:** `07-text-vs-data-vs-ui.md`
 - Decision framework
 - Examples by use case
 - Anti-patterns to avoid
@@ -59,10 +67,11 @@ This tutorial covers how to build a webcomic archive that serves content to both
 | `00-outline.md` | This outline |
 | `01-what-were-covering.md` | Overview of MCP Apps, WebMCP, return types |
 | `02-architecture-overview.md` | Single source of truth, three surfaces |
-| `03-http-vs-stdio.md` | MCP transports: HTTP vs stdio |
-| `04-mcp-apps-anatomy.md` | How MCP Apps work, bundling, registration |
-| `05-webmcp-anatomy.md` | WebMCP API, tool registration, templates |
-| `06-text-vs-data-vs-ui.md` | Return type decision framework |
+| `03-http-vs-stdio.md` | MCP HTTP transport and local development |
+| `04-tools-resources-prompts.md` | Tools vs Resources vs Prompts |
+| `05-mcp-apps-anatomy.md` | How MCP Apps work, bundling, registration |
+| `06-webmcp-anatomy.md` | WebMCP API, tool registration, templates |
+| `07-text-vs-data-vs-ui.md` | Return type decision framework |
 
 ---
 

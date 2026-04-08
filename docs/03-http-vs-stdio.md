@@ -1,62 +1,8 @@
-# MCP Transports: HTTP vs Stdio
+# MCP HTTP Transport
 
-MCP servers communicate with hosts (like Claude) through **transports**. The transport defines *how* messages flow between your server and the AI agent. Choose the right transport for your deployment scenario.
+MCP servers communicate with hosts (like Claude) through **transports**. This template uses HTTP transport — your server runs as a web service that AI agents connect to via URL.
 
-## The Two Transports
-
-### Stdio Transport
-
-The server runs as a local process. Communication happens via standard input/output streams.
-
-```
-┌─────────────┐     stdin      ┌─────────────┐
-│   Claude    │ ────────────▶  │ MCP Server  │
-│   Desktop   │ ◀────────────  │  (local)    │
-└─────────────┘    stdout      └─────────────┘
-```
-
-**How it works:**
-1. Claude Desktop spawns your server as a child process
-2. JSON-RPC messages flow through stdin/stdout
-3. Server stays alive for the duration of the session
-
-**Example: Minimal stdio server**
-
-```typescript
-// mcp-server-stdio/src/index.ts
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-
-const server = new Server(
-  { name: "comic-server", version: "1.0.0" },
-  { capabilities: { tools: {}, resources: {} } }
-);
-
-// Register tools...
-server.setRequestHandler(ListToolsRequestSchema, () => ({
-  tools: [{ name: "get_page", description: "Get a comic page", inputSchema: {...} }]
-}));
-
-// Connect via stdio
-const transport = new StdioServerTransport();
-await server.connect(transport);
-```
-
-**Claude Desktop config** (`claude_desktop_config.json`):
-```json
-{
-  "mcpServers": {
-    "comic-server": {
-      "command": "node",
-      "args": ["/path/to/mcp-server-stdio/dist/index.js"]
-    }
-  }
-}
-```
-
-### HTTP Transport
-
-The server runs as a web service. Communication happens via HTTP.
+## How HTTP Transport Works
 
 ```
 ┌─────────────┐   HTTP POST    ┌─────────────┐
@@ -65,13 +11,47 @@ The server runs as a web service. Communication happens via HTTP.
 └─────────────┘   JSON-RPC     └─────────────┘
 ```
 
-**How it works:**
+**The flow:**
 1. Server listens on an HTTP endpoint
 2. Each tool call is a POST request with JSON-RPC body
 3. Server responds with JSON-RPC result
 4. Server is stateless (typically serverless)
 
-**Example: Netlify Function**
+## Connecting to Your Server
+
+All major AI agents (Claude, ChatGPT, Gemini, Copilot) support HTTP connectors natively:
+
+1. Go to Settings → MCP Connectors
+2. Add connector URL: `https://your-site.netlify.app/mcp`
+3. Done!
+
+No local installation required — users just paste a URL.
+
+## Local Development
+
+For testing changes before deployment, use Netlify Dev:
+
+```bash
+# Start local server (serves site + functions on port 8888)
+cd your-project
+npx netlify dev
+```
+
+Then connect your AI agent to `http://localhost:8888/mcp`.
+
+**In Claude Desktop:**
+1. Open Settings → MCP Connectors
+2. Add: `http://localhost:8888/mcp`
+3. Test your tools
+
+**After making changes to the MCP App:**
+```bash
+cd mcp-app && npm run build      # Rebuild the app
+cd .. && npm run build:embed-apps # Embed into Netlify function
+# Restart Netlify Dev to pick up changes
+```
+
+## Example: Netlify Function
 
 ```typescript
 // netlify/functions/mcp.ts
@@ -116,84 +96,9 @@ export const handler: Handler = async (event) => {
 };
 ```
 
-**Setup (Claude, ChatGPT, Gemini, Copilot):**
-1. Go to Settings → MCP Connectors
-2. Add connector URL: `https://your-site.netlify.app/mcp`
-3. Done!
-
-All major AI agents support HTTP connectors natively — no local installation required.
-
-## Comparison
-
-| Aspect | Stdio | HTTP |
-|--------|-------|------|
-| **Deployment** | Local process | Web service |
-| **Setup for users** | Config file + local code | URL only |
-| **State** | Stateful (process stays alive) | Stateless (each request independent) |
-| **Data locality** | All data stays local | Data travels over network |
-| **Accessibility** | Local machine only | Anyone with the URL |
-| **Cold starts** | None | Yes (serverless) |
-| **MCP Apps support** | Full | Full |
-
-## When to Use Which
-
-### Use Stdio When:
-
-- **Development** — Fast iteration without deployment
-- **Privacy-sensitive** — Data never leaves the machine
-- **Local tools** — File system access, local databases
-- **Stateful operations** — Long-running processes, file watchers
-
-### Use HTTP When:
-
-- **Public distribution** — Anyone can connect with a URL
-- **Multi-agent support** — Claude, ChatGPT, Gemini, Copilot all work
-- **Serverless fits** — Stateless tool calls, pay-per-invocation
-- **No installation** — Users just paste a URL
-
-## This Template's Setup
-
-This webcomic template includes both transports:
-
-```
-mcp-server-stdio/     # Stdio server for local development
-  └── src/
-      ├── index.ts    # Entry point with StdioServerTransport
-      └── server.ts   # Shared server logic
-
-netlify/functions/    # HTTP server for deployment
-  └── mcp.ts          # Serverless function with JSON-RPC handling
-```
-
-**For local development:**
-```bash
-# Build and run stdio server
-cd mcp-server-stdio
-npm run build
-
-# Add to Claude Desktop config:
-{
-  "mcpServers": {
-    "comic-server": {
-      "command": "node",
-      "args": ["/path/to/mcp-server-stdio/dist/index.js"]
-    }
-  }
-}
-```
-
-**For production:**
-```bash
-# Deploy to Netlify
-netlify deploy --prod
-
-# Share the URL with users:
-# https://your-site.netlify.app/mcp
-```
-
 ## Implementation Tips
 
-### HTTP: Remember CORS
+### Always Include CORS Headers
 
 Browser-based clients need CORS headers:
 
@@ -210,7 +115,7 @@ if (event.httpMethod === 'OPTIONS') {
 }
 ```
 
-### HTTP: Add a Health Check
+### Add a Health Check
 
 GET requests should return server info for discovery:
 
@@ -228,63 +133,45 @@ if (event.httpMethod === 'GET') {
 }
 ```
 
-### Stdio: Log to stderr
+### Handle Serverless Limitations
 
-Stdout is for MCP messages only. Debug logs go to stderr:
+- **10s timeout** — Keep tool operations fast
+- **Cold starts** — First request after idle may be slower
+- **Stateless** — Each request is independent; use external storage for state
 
-```typescript
-console.error('Debug info goes here');  // ✅ Goes to stderr
-console.log('This breaks the protocol'); // ❌ Goes to stdout
+## This Template's Setup
+
+```
+netlify/functions/
+  └── mcp.ts          # HTTP server with JSON-RPC handling
+
+mcp-app/
+  └── dist/
+      └── index.html  # Bundled MCP App (embedded in server)
 ```
 
-### Both: Same Tool Logic
+**Deploy to production:**
+```bash
+netlify deploy --prod
 
-Keep tool implementations transport-agnostic:
-
-```typescript
-// tools/get-page.ts
-export async function getPageHandler(params: {
-  comic_id: string;
-  storyline_id: string;
-  page_number: number
-}) {
-  // Pure business logic - no transport concerns
-  const manifest = loadManifest();
-  const page = findPage(manifest, params);
-  return { page, navigation: buildNavigation(params) };
-}
-
-// Use in stdio server
-server.setRequestHandler(CallToolRequestSchema, async (req) => {
-  if (req.params.name === 'get_page') {
-    const result = await getPageHandler(req.params.arguments);
-    return { content: [{ type: 'text', text: JSON.stringify(result) }] };
-  }
-});
-
-// Use in HTTP server
-case 'tools/call':
-  if (params.name === 'get_page') {
-    return await getPageHandler(params.arguments);
-  }
+# Share the URL with users:
+# https://your-site.netlify.app/mcp
 ```
 
 ## Summary
 
-| You want... | Use... |
-|-------------|--------|
-| Local development | Stdio |
-| Public access | HTTP |
-| Privacy (data stays local) | Stdio |
-| Zero-install for users | HTTP |
-| Works with all major AI agents | HTTP |
+| Feature | HTTP Transport |
+|---------|---------------|
+| Deployment | Web service (Netlify, Vercel, etc.) |
+| Setup for users | URL only — no installation |
+| Accessibility | Anyone with the URL |
+| Works with | Claude, ChatGPT, Gemini, Copilot |
+| Local testing | `http://localhost:8888/mcp` via Netlify Dev |
 
 ## Customization
 
-When adapting this template for your webcomic:
+When adapting this template:
 
-1. **Stdio server** — Update `mcp-server-stdio/src/server.ts` with your tools
-2. **HTTP server** — Update `netlify/functions/mcp.ts` with matching logic
-3. **Server info** — Update name, version, and description in both servers
-
-Keep the tool handlers in sync between both servers, or extract them to a shared module.
+1. **Server logic** — Update `netlify/functions/mcp.ts` with your tools
+2. **Server info** — Update name, version, and description
+3. **MCP App** — Rebuild and embed after changes

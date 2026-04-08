@@ -43,11 +43,10 @@ describe('Phase 30.3: styles-min.css Color Replacements', () => {
   });
 
   describe('should contain blue theme colors', () => {
-    // The new blue theme colors (from tokens.css or direct replacements)
+    // The new blue theme colors (simplified palette)
     const blueThemeColors = [
       '#2563eb', // Primary blue
-      '#3b82f6', // Primary light
-      '#1d4ed8', // Primary dark
+      '#1d4ed8', // Primary dark (used for hover states)
     ];
 
     it.each(blueThemeColors)('should contain %s (or CSS variable reference)', (color) => {
@@ -187,7 +186,7 @@ describe('Phase 30.6: No rachelthegreat.com CDN References', () => {
 
   // MCP server files - should not have hardcoded production URLs
   const serverFilesToCheck = [
-    'mcp-server-stdio/src/server.ts',
+    'mcp-server/src/index.ts',
   ];
 
   it.each(serverFilesToCheck)('should not reference rachelthegreat.com in server: %s', (file) => {

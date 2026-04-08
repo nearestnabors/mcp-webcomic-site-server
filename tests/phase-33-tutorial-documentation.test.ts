@@ -17,9 +17,11 @@ const REQUIRED_TUTORIAL_FILES = [
   '00-outline.md',
   '01-what-were-covering.md',
   '02-architecture-overview.md',
-  '03-mcp-apps-anatomy.md',
-  '04-webmcp-anatomy.md',
-  '05-text-vs-data-vs-ui.md',
+  '03-http-vs-stdio.md',
+  '04-tools-resources-prompts.md',
+  '05-mcp-apps-anatomy.md',
+  '06-webmcp-anatomy.md',
+  '07-text-vs-data-vs-ui.md',
 ];
 
 // Rachel-specific content that should NOT appear in the public repo tutorials
@@ -142,8 +144,8 @@ describe('Phase 33.4: Code Examples Use Generic IDs', () => {
 describe('Phase 33.5: Customization Guidance', () => {
   const filesWithCustomization = [
     '02-architecture-overview.md',
-    '03-mcp-apps-anatomy.md',
-    '04-webmcp-anatomy.md',
+    '05-mcp-apps-anatomy.md',
+    '06-webmcp-anatomy.md',
   ];
 
   for (const filename of filesWithCustomization) {
@@ -185,14 +187,16 @@ describe('Phase 33: Additional Content Quality Checks', () => {
       // Should reference the other tutorial files
       expect(content).toMatch(/01-what-were-covering/);
       expect(content).toMatch(/02-architecture-overview/);
-      expect(content).toMatch(/03-mcp-apps-anatomy/);
-      expect(content).toMatch(/04-webmcp-anatomy/);
-      expect(content).toMatch(/05-text-vs-data-vs-ui/);
+      expect(content).toMatch(/03-http-vs-stdio/);
+      expect(content).toMatch(/04-tools-resources-prompts/);
+      expect(content).toMatch(/05-mcp-apps-anatomy/);
+      expect(content).toMatch(/06-webmcp-anatomy/);
+      expect(content).toMatch(/07-text-vs-data-vs-ui/);
     });
   });
 
-  describe('03-mcp-apps-anatomy.md specific checks', () => {
-    const mcpAppsPath = path.join(DOCS_DIR, '03-mcp-apps-anatomy.md');
+  describe('05-mcp-apps-anatomy.md specific checks', () => {
+    const mcpAppsPath = path.join(DOCS_DIR, '05-mcp-apps-anatomy.md');
 
     it('should explain the communication protocol', () => {
       if (!fs.existsSync(mcpAppsPath)) return;
@@ -207,8 +211,8 @@ describe('Phase 33: Additional Content Quality Checks', () => {
     });
   });
 
-  describe('04-webmcp-anatomy.md specific checks', () => {
-    const webmcpPath = path.join(DOCS_DIR, '04-webmcp-anatomy.md');
+  describe('06-webmcp-anatomy.md specific checks', () => {
+    const webmcpPath = path.join(DOCS_DIR, '06-webmcp-anatomy.md');
 
     it('should explain tool registration', () => {
       if (!fs.existsSync(webmcpPath)) return;
@@ -223,8 +227,8 @@ describe('Phase 33: Additional Content Quality Checks', () => {
     });
   });
 
-  describe('05-text-vs-data-vs-ui.md specific checks', () => {
-    const decisionPath = path.join(DOCS_DIR, '05-text-vs-data-vs-ui.md');
+  describe('07-text-vs-data-vs-ui.md specific checks', () => {
+    const decisionPath = path.join(DOCS_DIR, '07-text-vs-data-vs-ui.md');
 
     it('should describe when to use each return type', () => {
       if (!fs.existsSync(decisionPath)) return;

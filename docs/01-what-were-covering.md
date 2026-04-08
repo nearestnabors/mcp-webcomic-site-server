@@ -11,7 +11,12 @@ MCP Tools are functions that an AI agent can call on your server. They're define
 | Tool | Description | Returns |
 |------|-------------|---------|
 | `list_comics` | Get all available comics in the archive | JSON data (comic titles, descriptions, counts) |
-| `get_page` | Get a specific comic page | JSON data + opens Comic Reader UI |
+| `list_storylines` | Get storylines for a specific comic | JSON data (storyline titles, page counts) |
+| `list_characters` | Get all characters, optionally filtered by comic | JSON data (character names, bios, thumbnails) |
+| `search_comics` | Full-text search across transcripts and commentary | JSON data (matching pages with snippets) |
+| `search_by_character` | Find all pages featuring a specific character | JSON data (pages where character appears) |
+| `get_transcript` | Get the transcript text for a specific page | Text (panel descriptions and dialogue) |
+| `get_page` | Get a specific comic page | JSON data + **opens Comic Reader UI** |
 
 Tools can return plain data (for the agent to reason about) or open an MCP App (for the user to interact with).
 
@@ -25,11 +30,16 @@ MCP Resources expose context and data to AI agents — things like files, databa
 - Configuration data
 - Documentation
 
-**In this template**, we use a custom `ui://` scheme to serve MCP App HTML as a resource. This is a specific pattern for MCP Apps, not the typical use of resources.
+**Resources in this template:**
 
 | Resource | URI | Purpose |
 |----------|-----|---------|
-| Comic Reader | `ui://rtg-comics/reader.html` | MCP App UI for displaying comics |
+| Transcript Index | `transcript://webcomic/index` | Index of all available comic transcripts |
+| Commentary Index | `commentary://webcomic/index` | Index of all author commentary |
+| Storyline Transcripts | `transcript://{comic-id}/{storyline-id}` | All transcripts for a storyline |
+| Storyline Commentary | `commentary://{comic-id}/{storyline-id}` | All commentary for a storyline |
+
+Resources provide context that AI agents can read without invoking tools — useful for grounding responses in your content.
 
 ## MCP Apps
 
@@ -87,9 +97,9 @@ Not every tool should open a UI. The decision depends on what the agent (and use
 
 When adapting this template for your own comic:
 
-1. **MCP Tools** — Add or modify tools in `mcp-server-stdio/src/server.ts`
-2. **MCP Apps** — UI components are built in `mcp-app/` and served as resources via `ui://` URIs
-3. **WebMCP** — Tool registration in templates automatically uses your manifest data
-4. **Return types** — The decision framework applies regardless of content type
+1. **MCP Tools** — Add or modify tools in `netlify/functions/mcp.ts`
+2. **MCP Resources** — Add context resources (transcripts, commentary, etc.) in the same file
+3. **MCP Apps** — UI components are built in `mcp-app/` and bundled into the server
+4. **WebMCP** — Tool registration in templates automatically uses your manifest data
 
 The architecture is content-agnostic — swap out the sample content for your own comics and the same rendering surfaces work automatically.

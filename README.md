@@ -137,7 +137,7 @@ See `docs/` for detailed tutorials.
         ▼                       ▼                               ▼
 ┌───────────────┐     ┌─────────────────┐         ┌─────────────────┐
 │ Static Site   │     │   MCP Server    │         │  WebMCP Tools   │
-│ (11ty build)  │     │   (HTTP/stdio)  │         │  (on-page JS)   │
+│ (11ty build)  │     │   (HTTP)        │         │  (on-page JS)   │
 │               │     │                 │         │                 │
 │ - HTML pages  │     │ - list_comics   │         │ - list_comics   │
 │ - Pagefind    │     │ - get_page      │         │ - search_comics │
@@ -155,18 +155,15 @@ See `docs/` for detailed tutorials.
 2. Add as MCP connector: `https://your-site.netlify.app/mcp`
 3. Ask Claude to "show me the comics"
 
-### Local Development with Claude Desktop
+### Local Development
 
-For local testing, add to your Claude Desktop MCP config:
+For local testing, use Netlify Dev:
 
-```json
-{
-  "your-comics-local": {
-    "command": "npx",
-    "args": ["tsx", "/path/to/mcp-webcomic-site-server/mcp-server-stdio/src/index.ts"]
-  }
-}
+```bash
+npx netlify dev
 ```
+
+Then connect Claude Desktop via MCP Connectors to `http://localhost:8888/mcp`.
 
 ### Available Tools
 
@@ -224,8 +221,7 @@ mcp-webcomic-site-server/
 │   ├── images/             # Comic images
 │   └── pages/              # Static pages
 ├── shared/                 # Shared design tokens
-├── mcp-server/             # HTTP MCP server (for Netlify)
-├── mcp-server-stdio/       # Stdio MCP server (for local development)
+├── mcp-server/             # Standalone HTTP MCP server
 ├── mcp-app/                # MCP App UI (comic reader)
 ├── netlify/                # Netlify Functions
 ├── scripts/                # Build scripts

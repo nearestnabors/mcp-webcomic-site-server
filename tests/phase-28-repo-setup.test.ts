@@ -26,8 +26,6 @@ describe('Phase 28.1: Directory Structure', () => {
     'mcp-server',
     'mcp-server/src',
     'mcp-server/src/tools',
-    'mcp-server-stdio',
-    'mcp-server-stdio/src',
     'mcp-app',
     'mcp-app/src',
     'mcp-app-minimal',
