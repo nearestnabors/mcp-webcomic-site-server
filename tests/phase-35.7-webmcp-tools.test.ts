@@ -30,7 +30,7 @@ describe('Phase 35.7: WebMCP Tools Registration', () => {
       expect(fs.existsSync(filepath)).toBe(true);
 
       const content = fs.readFileSync(filepath, 'utf-8');
-      expect(content).toContain('navigator.modelContext.registerTool');
+      expect(content).toContain('document.modelContext.registerTool');
       expect(content).toContain("name: 'list_comics'");
       expect(content).toContain("name: 'search_comics'");
     });
@@ -40,7 +40,7 @@ describe('Phase 35.7: WebMCP Tools Registration', () => {
       expect(fs.existsSync(filepath)).toBe(true);
 
       const content = fs.readFileSync(filepath, 'utf-8');
-      expect(content).toContain('navigator.modelContext.registerTool');
+      expect(content).toContain('document.modelContext.registerTool');
       expect(content).toContain("name: 'get_current_page'");
       expect(content).toContain("name: 'get_transcript'");
       expect(content).toContain("name: 'get_image_url'");
@@ -76,7 +76,7 @@ describe('Phase 35.7: WebMCP Tools Registration', () => {
       const content = fs.readFileSync(indexPath, 'utf-8');
 
       // Should include the tool registration script
-      expect(content).toContain('navigator.modelContext.registerTool');
+      expect(content).toContain('document.modelContext.registerTool');
       expect(content).toContain('list_comics');
       expect(content).toContain('search_comics');
     });
@@ -131,7 +131,7 @@ describe('Phase 35.7: WebMCP Tools Registration', () => {
       expect(scriptContent).toContain('})();');
 
       // Verify proper modelContext check
-      expect(scriptContent).toContain("if (!('modelContext' in navigator))");
+      expect(scriptContent).toContain("if (!('modelContext' in document))");
     });
 
     it('tool registrations have required fields', () => {
@@ -147,7 +147,7 @@ describe('Phase 35.7: WebMCP Tools Registration', () => {
         expect(call).toContain('name:');
         expect(call).toContain('description:');
         expect(call).toContain('inputSchema:');
-        expect(call).toContain('execute:');
+        expect(call).toMatch(/async execute\s*\(/);
       }
     });
 
@@ -159,7 +159,7 @@ describe('Phase 35.7: WebMCP Tools Registration', () => {
       expect(content).toContain('/pagefind/pagefind.js');
       expect(content).toContain('pagefindInstance.init()');
       // Note: Variable is named pagefindInstance, so search is searchResults.results
-      expect(content).toContain('pagefind.search(query)');
+      expect(content).toContain('pagefind.search(query');
     });
   });
 
@@ -185,7 +185,7 @@ describe('Phase 35.7: WebMCP Tools Registration', () => {
       const content = fs.readFileSync(filepath, 'utf-8');
 
       // Should check for modelContext before attempting registration
-      expect(content).toContain("if (!('modelContext' in navigator))");
+      expect(content).toContain("if (!('modelContext' in document))");
       expect(content).toContain('return;');
     });
   });

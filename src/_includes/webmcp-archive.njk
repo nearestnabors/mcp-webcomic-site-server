@@ -12,40 +12,64 @@
 (function() {
   'use strict';
 
-  if (!('modelContext' in navigator)) {
+  if (!('modelContext' in document)) {
     return;
   }
 
   {% if pagination.href.previous %}
   // Tool: prev_page (newer content)
-  navigator.modelContext.registerTool({
+  document.modelContext.registerTool({
     name: 'prev_page',
-    description: 'Navigate to the previous page of the archive (newer content)',
+    description: 'Navigate to the previous page of the archive (newer content). This navigates the browser away from the current page.',
+    annotations: { readOnlyHint: false },
     inputSchema: {
       type: 'object',
       properties: {},
       required: []
     },
-    execute: async () => {
+    outputSchema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean' },
+        navigating_to: { type: 'string' }
+      }
+    },
+    async execute() {
       window.location.href = {{ pagination.href.previous | dump | safe }};
-      return { success: true, navigating_to: {{ pagination.href.previous | dump | safe }} };
+      const data = { success: true, navigating_to: {{ pagination.href.previous | dump | safe }} };
+      return {
+        content: [{ type: 'text', text: JSON.stringify(data) }],
+        structuredContent: data
+      };
     }
   });
   {% endif %}
 
   {% if pagination.href.next %}
   // Tool: next_page (older content)
-  navigator.modelContext.registerTool({
+  document.modelContext.registerTool({
     name: 'next_page',
-    description: 'Navigate to the next page of the archive (older content)',
+    description: 'Navigate to the next page of the archive (older content). This navigates the browser away from the current page.',
+    annotations: { readOnlyHint: false },
     inputSchema: {
       type: 'object',
       properties: {},
       required: []
     },
-    execute: async () => {
+    outputSchema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean' },
+        navigating_to: { type: 'string' }
+      }
+    },
+    async execute() {
       window.location.href = {{ pagination.href.next | dump | safe }};
-      return { success: true, navigating_to: {{ pagination.href.next | dump | safe }} };
+      const data = { success: true, navigating_to: {{ pagination.href.next | dump | safe }} };
+      return {
+        content: [{ type: 'text', text: JSON.stringify(data) }],
+        structuredContent: data
+      };
     }
   });
   {% endif %}

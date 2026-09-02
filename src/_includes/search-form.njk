@@ -1,12 +1,11 @@
 <div class="search-container">
   <form action="/search/" method="get" class="search-form"
-        data-mcp-tool="search_comics"
-        data-mcp-description="Search comic transcripts and commentary for matching content. Returns page titles, URLs, and excerpts.">
+        toolname="search_comics"
+        tooldescription="Search comic transcripts and commentary for matching content. Returns page titles, URLs, and excerpts.">
     <input type="search"
            name="q"
-           data-mcp-param="query"
-           data-mcp-description="The search query to find in comic transcripts and commentary"
-           data-mcp-required="true"
+           toolparamdescription="The search query to find in comic transcripts and commentary"
+           required
            placeholder="Search..."
            aria-label="Search" />
     <button type="submit" aria-label="Submit search">Search</button>

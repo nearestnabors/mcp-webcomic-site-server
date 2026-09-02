@@ -35,8 +35,14 @@
 {% block content %}
 <article class="post_full post_comic" data-pagefind-body>
   <header>
-    <time datetime="{{ publishedDate }}">{{ publishedDate | formatDate }}</time>
+    <time datetime="{{ publishedDate }}"
+          data-pagefind-meta="date:{{ publishedDate }}"
+          data-pagefind-sort="date:{{ publishedDate }}">{{ publishedDate | formatDate }}</time>
     <h1 data-pagefind-meta="title">{{ title }}</h1>
+    {# Structured metadata so WebMCP search results can reason about ordering/place #}
+    <span hidden data-pagefind-meta="page_number:{{ pageNumber }}"></span>
+    <span hidden data-pagefind-meta="storyline:{{ storyline_id }}"></span>
+    <span hidden data-pagefind-meta="comic:{{ comic_id }}"></span>
   </header>
 
   <div class="comic">

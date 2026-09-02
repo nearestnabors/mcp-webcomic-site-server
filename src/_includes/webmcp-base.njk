@@ -8,7 +8,7 @@
 (function() {
   'use strict';
 
-  if (!('modelContext' in navigator)) {
+  if (!('modelContext' in document)) {
     return;
   }
 
@@ -27,66 +27,424 @@
     }
   }
 
+  // Catalog (characters/storylines) loaded on first use
+  let catalogInstance = null;
+  async function loadCatalog() {
+    if (catalogInstance) return catalogInstance;
+    try {
+      const res = await fetch('/webmcp/catalog.json');
+      if (!res.ok) return null;
+      catalogInstance = await res.json();
+      return catalogInstance;
+    } catch (e) {
+      console.error('Failed to load WebMCP catalog:', e);
+      return null;
+    }
+  }
+
   // Tool: list_comics - available on all pages
-  navigator.modelContext.registerTool({
+  document.modelContext.registerTool({
     name: 'list_comics',
     description: 'Get a list of all available comics in the archive',
+    annotations: { readOnlyHint: true },
     inputSchema: {
       type: 'object',
       properties: {},
       required: []
     },
-    execute: async () => ({
-      comics: [
-        {
-          id: 'fran-hopper-comics',
-          title: 'Fran Hopper Comics',
-          type: 'episodic',
-          description: 'Public domain comics from Golden Age artist Fran Hopper (1922-2017), featuring sci-fi heroines.',
-          archive_url: '/comics/'
+    outputSchema: {
+      type: 'object',
+      properties: {
+        comics: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              title: { type: 'string' },
+              type: { type: 'string' },
+              description: { type: 'string' },
+              archive_url: { type: 'string' }
+            }
+          }
         }
-      ]
-    })
+      },
+      required: ['comics']
+    },
+    async execute() {
+      const data = {
+        comics: [
+          {
+            id: 'fran-hopper-comics',
+            title: 'Fran Hopper Comics',
+            type: 'episodic',
+            description: 'Public domain comics from Golden Age artist Fran Hopper (1922-2017), featuring sci-fi heroines.',
+            archive_url: '/comics/'
+          }
+        ]
+      };
+      return {
+        content: [{ type: 'text', text: JSON.stringify(data) }],
+        structuredContent: data
+      };
+    }
   });
 
   // Tool: search_comics - available on all pages
-  navigator.modelContext.registerTool({
+  document.modelContext.registerTool({
     name: 'search_comics',
-    description: 'Search comic transcripts and commentary for matching content',
+    description: 'Search comic transcripts, author commentary, and comments for matching content. Returns a page of results (each with page_number, storyline, and date) plus the total match count so you can page through with offset. Use sort to order chronologically, e.g. to find the earliest matching page.',
+    // Excerpts may include reader comment text (written by strangers), so flag as untrusted.
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
     inputSchema: {
       type: 'object',
       properties: {
         query: {
           type: 'string',
-          description: 'The search query to find in comic transcripts and commentary'
+          minLength: 1,
+          description: 'The search query to find in comic transcripts, commentary, and comments'
+        },
+        limit: {
+          type: 'integer',
+          minimum: 1,
+          maximum: 25,
+          description: 'Maximum number of results to return (default 10, max 25)'
+        },
+        offset: {
+          type: 'integer',
+          minimum: 0,
+          description: 'Number of results to skip, for paging through large result sets (default 0)'
+        },
+        sort: {
+          type: 'string',
+          enum: ['relevance', 'newest', 'oldest'],
+          description: 'Result ordering: "relevance" (default), "newest" first, or "oldest" first (use "oldest" to find the earliest/first matching page).'
         }
       },
       required: ['query']
     },
-    execute: async ({ query }) => {
+    outputSchema: {
+      type: 'object',
+      properties: {
+        results: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              url: { type: 'string' },
+              title: { type: 'string' },
+              excerpt: { type: 'string' },
+              page_number: { type: 'integer', description: 'Page number within its storyline (comics only)' },
+              storyline: { type: 'string', description: 'Storyline id (comics only)' },
+              date: { type: 'string', description: 'Publish date (ISO) of the page' }
+            }
+          }
+        },
+        total: { type: 'integer', description: 'Total number of matches across all pages' },
+        offset: { type: 'integer', description: 'Offset this page started at' },
+        returned: { type: 'integer', description: 'Number of results in this page' }
+      },
+      required: ['results', 'total', 'offset', 'returned']
+    },
+    async execute({ query, limit, offset, sort }) {
       const pagefind = await loadPagefind();
       if (!pagefind) {
-        return { error: 'Search not available (Pagefind failed to load)' };
+        return {
+          content: [{ type: 'text', text: 'Search not available (Pagefind failed to load)' }],
+          isError: true
+        };
       }
       try {
-        const searchResults = await pagefind.search(query);
+        const max = Math.min(Math.max(1, limit || 10), 25);
+        const start = Math.max(0, offset || 0);
+        const searchOptions = {};
+        if (sort === 'newest') searchOptions.sort = { date: 'desc' };
+        else if (sort === 'oldest') searchOptions.sort = { date: 'asc' };
+        const searchResults = await pagefind.search(query, searchOptions);
+        const total = searchResults.results.length;
         const results = await Promise.all(
-          searchResults.results.slice(0, 10).map(async (result) => {
+          searchResults.results.slice(start, start + max).map(async (result) => {
             const data = await result.data();
+            const meta = data.meta || {};
             return {
               url: data.url,
-              title: data.meta?.title || data.url,
-              excerpt: data.excerpt
+              title: meta.title || data.url,
+              // Strip Pagefind highlight markup (e.g. <mark>) for clean text
+              excerpt: (data.excerpt || '').replace(/<[^>]*>/g, ''),
+              page_number: meta.page_number ? Number(meta.page_number) : undefined,
+              storyline: meta.storyline || undefined,
+              date: meta.date || undefined
             };
           })
         );
-        return { results, total: searchResults.results.length };
+        const payload = { results, total, offset: start, returned: results.length };
+        return {
+          content: [{ type: 'text', text: JSON.stringify(payload) }],
+          structuredContent: payload
+        };
       } catch (e) {
-        return { error: 'Search failed: ' + e.message };
+        return {
+          content: [{ type: 'text', text: 'Search failed: ' + e.message }],
+          isError: true
+        };
       }
     }
   });
 
-  console.log('WebMCP: base tools registered (list_comics, search_comics)');
+  // Tool: open_comic_page - jump to any page on the site by URL (available everywhere)
+  document.modelContext.registerTool({
+    name: 'open_comic_page',
+    description: 'Navigate directly to a page on this site by its URL, such as a url returned by list_comics or search_comics. This navigates the browser away from the current page. Only same-site URLs are allowed.',
+    annotations: { readOnlyHint: false },
+    inputSchema: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string',
+          description: 'A same-site URL or path to navigate to (e.g. "/comics/gale-allen-page-1/")'
+        }
+      },
+      required: ['url']
+    },
+    outputSchema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean' },
+        navigating_to: { type: 'string' }
+      }
+    },
+    async execute({ url }) {
+      let target;
+      try {
+        target = new URL(url, window.location.origin);
+      } catch (e) {
+        return {
+          content: [{ type: 'text', text: 'Invalid URL: ' + url }],
+          isError: true
+        };
+      }
+      if (target.origin !== window.location.origin) {
+        return {
+          content: [{ type: 'text', text: 'Refusing to navigate off-site: ' + url }],
+          isError: true
+        };
+      }
+      window.location.href = target.href;
+      const data = { success: true, navigating_to: target.pathname + target.search };
+      return {
+        content: [{ type: 'text', text: JSON.stringify(data) }],
+        structuredContent: data
+      };
+    }
+  });
+
+  // Tool: get_page - read full content of any same-site page WITHOUT navigating away
+  document.modelContext.registerTool({
+    name: 'get_page',
+    description: "Fetch and read the full text of any page on this site by URL - the comic transcript, the author's commentary note, and archived comments - without navigating away from the current page. Use this when a search excerpt is too short to answer a question. Same-site URLs only.",
+    // Returns archived reader comments (written by strangers), so flag as untrusted.
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
+    inputSchema: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string',
+          description: 'A same-site URL or path to read (e.g. "/comics/gale-allen-page-1/")'
+        }
+      },
+      required: ['url']
+    },
+    outputSchema: {
+      type: 'object',
+      properties: {
+        url: { type: 'string' },
+        title: { type: 'string' },
+        transcript: { type: 'string' },
+        commentary: { type: 'string' },
+        comments: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              author: { type: 'string' },
+              date: { type: 'string' },
+              text: { type: 'string' }
+            }
+          }
+        }
+      }
+    },
+    async execute({ url }) {
+      let target;
+      try {
+        target = new URL(url, window.location.origin);
+      } catch (e) {
+        return { content: [{ type: 'text', text: 'Invalid URL: ' + url }], isError: true };
+      }
+      if (target.origin !== window.location.origin) {
+        return { content: [{ type: 'text', text: 'Refusing to fetch off-site: ' + url }], isError: true };
+      }
+      let doc;
+      try {
+        const res = await fetch(target.href);
+        if (!res.ok) {
+          return { content: [{ type: 'text', text: 'Failed to fetch ' + target.pathname + ' (HTTP ' + res.status + ')' }], isError: true };
+        }
+        const html = await res.text();
+        doc = new DOMParser().parseFromString(html, 'text/html');
+      } catch (e) {
+        return { content: [{ type: 'text', text: 'Failed to fetch ' + url + ': ' + e.message }], isError: true };
+      }
+      const textOf = (sel) => {
+        const el = doc.querySelector(sel);
+        return el ? el.textContent.trim().replace(/\s+/g, ' ') : '';
+      };
+      const data = {
+        url: target.pathname,
+        title: textOf('h1[data-pagefind-meta="title"]') || (doc.title || '').trim(),
+        transcript: textOf('.transcript-content'),
+        commentary: textOf('.copy'),
+        comments: Array.from(doc.querySelectorAll('.comment-list li.comment')).map((li) => ({
+          author: (li.querySelector('.comment-author')?.textContent || '').trim(),
+          date: (li.querySelector('.comment-date')?.textContent || '').trim(),
+          text: (li.querySelector('.comment-body')?.textContent || '').trim().replace(/\s+/g, ' ')
+        }))
+      };
+      return {
+        content: [{ type: 'text', text: JSON.stringify(data) }],
+        structuredContent: data
+      };
+    }
+  });
+
+  // Tool: list_characters - recurring characters with short bios
+  document.modelContext.registerTool({
+    name: 'list_characters',
+    description: 'List the recurring characters in the comics, each with a short bio and how many pages they appear on.',
+    annotations: { readOnlyHint: true },
+    inputSchema: { type: 'object', properties: {}, required: [] },
+    outputSchema: {
+      type: 'object',
+      properties: {
+        characters: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              slug: { type: 'string' },
+              name: { type: 'string' },
+              comic: { type: 'string' },
+              bio: { type: 'string' },
+              appearance_count: { type: 'integer' }
+            }
+          }
+        }
+      }
+    },
+    async execute() {
+      const cat = await loadCatalog();
+      if (!cat) {
+        return { content: [{ type: 'text', text: 'Character data not available' }], isError: true };
+      }
+      const data = { characters: cat.characters };
+      return { content: [{ type: 'text', text: JSON.stringify(data) }], structuredContent: data };
+    }
+  });
+
+  // Tool: search_by_character - pages a given character appears on
+  document.modelContext.registerTool({
+    name: 'search_by_character',
+    description: 'List the comic pages a given character appears on, looked up by character slug (e.g. "gale-allen") or name (e.g. "Gale Allen"). Each result has url, title, page_number, storyline, and date.',
+    annotations: { readOnlyHint: true },
+    inputSchema: {
+      type: 'object',
+      properties: {
+        character: {
+          type: 'string',
+          minLength: 1,
+          description: 'Character slug (e.g. "gale-allen") or display name (e.g. "Gale Allen"). Use list_characters to see valid options.'
+        }
+      },
+      required: ['character']
+    },
+    outputSchema: {
+      type: 'object',
+      properties: {
+        character: { type: 'string' },
+        slug: { type: 'string' },
+        total: { type: 'integer' },
+        results: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              url: { type: 'string' },
+              title: { type: 'string' },
+              page_number: { type: 'integer' },
+              storyline: { type: 'string' },
+              comic: { type: 'string' },
+              date: { type: 'string' }
+            }
+          }
+        }
+      }
+    },
+    async execute({ character }) {
+      const cat = await loadCatalog();
+      if (!cat) {
+        return { content: [{ type: 'text', text: 'Character data not available' }], isError: true };
+      }
+      const key = String(character || '').toLowerCase().trim();
+      const match = cat.characters.find((c) =>
+        c.slug.toLowerCase() === key || c.name.toLowerCase() === key
+      );
+      const slug = match ? match.slug : key;
+      const results = cat.appearances[slug] || [];
+      const data = {
+        character: match ? match.name : character,
+        slug,
+        total: results.length,
+        results
+      };
+      return { content: [{ type: 'text', text: JSON.stringify(data) }], structuredContent: data };
+    }
+  });
+
+  // Tool: list_storylines - story arcs across the comics
+  document.modelContext.registerTool({
+    name: 'list_storylines',
+    description: 'List all storylines/story arcs across the comics, each with its comic, page count, and the URL of its first page (useful for starting a storyline from the beginning).',
+    annotations: { readOnlyHint: true },
+    inputSchema: { type: 'object', properties: {}, required: [] },
+    outputSchema: {
+      type: 'object',
+      properties: {
+        storylines: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              title: { type: 'string' },
+              comic: { type: 'string' },
+              order: { type: 'integer' },
+              page_count: { type: 'integer' },
+              first_page_url: { type: 'string' }
+            }
+          }
+        }
+      }
+    },
+    async execute() {
+      const cat = await loadCatalog();
+      if (!cat) {
+        return { content: [{ type: 'text', text: 'Storyline data not available' }], isError: true };
+      }
+      const data = { storylines: cat.storylines };
+      return { content: [{ type: 'text', text: JSON.stringify(data) }], structuredContent: data };
+    }
+  });
+
+  console.log('WebMCP: base tools registered (list_comics, search_comics, open_comic_page, get_page, list_characters, search_by_character, list_storylines)');
 })();
 </script>
