@@ -84,109 +84,145 @@ registerAppResources(server);
 
 // ─── Tool Registration ───────────────────────────────────────────────────────
 
+// All of these tools only read from the static manifest; none mutate state,
+// and they operate on a closed dataset. readOnlyHint helps agents decide when
+// human confirmation is unnecessary. Each also returns structuredContent so
+// clients get typed data without parsing the text block.
+const READ_ONLY = { readOnlyHint: true, openWorldHint: false };
+
 // Register list_comics tool (no parameters)
-server.tool(
+server.registerTool(
   listComicsTool.name,
-  listComicsTool.description,
-  {},
+  {
+    description: listComicsTool.description,
+    inputSchema: {},
+    annotations: READ_ONLY,
+  },
   async () => {
     const result = await listComicsHandler();
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      structuredContent: result as unknown as Record<string, unknown>,
     };
   }
 );
 
 // Register list_storylines tool
-server.tool(
+server.registerTool(
   listStorylinesTool.name,
-  listStorylinesTool.description,
   {
-    comic_id: z.string().describe('The unique identifier for the comic (e.g., "crow-princess", "rachel-the-great")'),
+    description: listStorylinesTool.description,
+    inputSchema: {
+      comic_id: z.string().describe('The unique identifier for the comic (e.g., "fran-hopper-comics")'),
+    },
+    annotations: READ_ONLY,
   },
   async (params) => {
     const result = await listStorylinesHandler(params);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      structuredContent: result as unknown as Record<string, unknown>,
     };
   }
 );
 
 // Register get_page tool
-server.tool(
+server.registerTool(
   getPageTool.name,
-  getPageTool.description,
   {
-    comic_id: z.string().describe('The unique identifier for the comic'),
-    storyline_id: z.string().describe('The unique identifier for the storyline'),
-    page_number: z.number().describe('The 1-indexed page number within the storyline'),
+    description: getPageTool.description,
+    inputSchema: {
+      comic_id: z.string().describe('The unique identifier for the comic'),
+      storyline_id: z.string().describe('The unique identifier for the storyline'),
+      page_number: z.number().describe('The 1-indexed page number within the storyline'),
+    },
+    annotations: READ_ONLY,
   },
   async (params) => {
     const result = await getPageHandler(params);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      structuredContent: result as unknown as Record<string, unknown>,
     };
   }
 );
 
 // Register get_transcript tool (text-only, no UI)
-server.tool(
+server.registerTool(
   getTranscriptTool.name,
-  getTranscriptTool.description,
   {
-    comic_id: z.string().describe('The unique identifier for the comic'),
-    storyline_id: z.string().describe('The unique identifier for the storyline'),
-    page_number: z.number().describe('The 1-indexed page number within the storyline'),
+    description: getTranscriptTool.description,
+    inputSchema: {
+      comic_id: z.string().describe('The unique identifier for the comic'),
+      storyline_id: z.string().describe('The unique identifier for the storyline'),
+      page_number: z.number().describe('The 1-indexed page number within the storyline'),
+    },
+    annotations: READ_ONLY,
   },
   async (params) => {
     const result = await getTranscriptHandler(params);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      structuredContent: result as unknown as Record<string, unknown>,
     };
   }
 );
 
 // Register search_comics tool
-server.tool(
+server.registerTool(
   searchComicsTool.name,
-  searchComicsTool.description,
   {
-    query: z.string().describe('The search query to find in comic content'),
+    description: searchComicsTool.description,
+    inputSchema: {
+      query: z.string().describe('The search query to find in comic content'),
+      limit: z.number().int().min(1).max(50).optional().describe('Maximum number of results to return (default 10, max 50)'),
+      offset: z.number().int().min(0).optional().describe('Number of results to skip, for paging through large result sets (default 0)'),
+    },
+    annotations: READ_ONLY,
   },
   async (params) => {
     const result = await searchComicsHandler(params);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      structuredContent: result as unknown as Record<string, unknown>,
     };
   }
 );
 
 // Register list_characters tool
-server.tool(
+server.registerTool(
   listCharactersTool.name,
-  listCharactersTool.description,
   {
-    comic_id: z.string().optional().describe('Optional comic identifier to filter characters (e.g., "rachel-the-great")'),
+    description: listCharactersTool.description,
+    inputSchema: {
+      comic_id: z.string().optional().describe('Optional comic identifier to filter characters (e.g., "fran-hopper-comics")'),
+    },
+    annotations: READ_ONLY,
   },
   async (params) => {
     const result = await listCharactersHandler(params);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      structuredContent: result as unknown as Record<string, unknown>,
     };
   }
 );
 
 // Register search_by_character tool
-server.tool(
+server.registerTool(
   searchByCharacterTool.name,
-  searchByCharacterTool.description,
   {
-    character_slug: z.string().describe('The character slug to search for (e.g., "tuna", "rachel_the_great")'),
+    description: searchByCharacterTool.description,
+    inputSchema: {
+      character_slug: z.string().describe('The character slug to search for (e.g., "gale-allen", "mysta")'),
+    },
+    annotations: READ_ONLY,
   },
   async (params) => {
     const result = await searchByCharacterHandler(params);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      structuredContent: result as unknown as Record<string, unknown>,
     };
   }
 );
