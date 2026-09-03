@@ -177,9 +177,6 @@ a.imgreplace span {
     margin: 1em auto !important;
 }
 /* System font stack - no custom fonts to load */
-.imgreplace span {
-    background: url(/images/theme/sprite.png) 0 0 no-repeat;
-}
 body {
     background: #f8fafc;
     color: #444;
@@ -369,7 +366,7 @@ time {
     width: 210px;
 }
 .footer_twitter {
-    background: #fff url(/images/theme/bg_twitter.png) 90% 100% no-repeat;
+    background: #fff;
     border-radius: 8px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -446,7 +443,6 @@ time {
     margin-bottom: 7px;
 }
 .footer_social li .social_link {
-    background: url(/images/theme/icons.png) 7px -235px no-repeat;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -538,7 +534,6 @@ time {
     margin-bottom: 14px;
 }
 .sidebar .feed-links a {
-    background: url(/images/theme/icons.png) 0 -760px no-repeat;
     display: block;
     font-size: 14px;
     line-height: 1.25em;
@@ -729,7 +724,6 @@ time {
     width: 650px;
 }
 .image_comic-page {
-    background: url(/images/theme/ajax-loader.gif) center center no-repeat;
     position: relative;
     z-index: 10;
 }
@@ -749,7 +743,7 @@ time {
     margin-left: 1em;
 }
 .toc #story-jump h4 {
-    background: #999 url("/images/theme/icons.png") no-repeat scroll 100% -551px;
+    background: #999;
     color: #fff;
     font-size: 14px;
     border: 1px solid #666;
@@ -866,7 +860,6 @@ time {
     width: 650px;
 }
 .nav_comic a {
-    background: url(/images/theme/sprite.png) 0 -71px no-repeat;
     display: block;
     height: 133px;
     overflow: hidden;
@@ -995,9 +988,6 @@ time {
     top: 4px;
     width: 14px;
     height: 14px;
-}
-.i_rss span {
-    background: url(/images/theme/icons.png) 0 -480px no-repeat;
 }
 .comment header,
 #commentform header,
@@ -1492,6 +1482,17 @@ a.button {
 
 #story-jump details summary h4 {
     margin: 0;
+}
+
+#story-jump details summary h4::after {
+    content: "\25B8"; /* ▸ collapsed */
+    float: right;
+    margin-left: 0.5em;
+    transition: transform 0.15s ease;
+}
+
+#story-jump details[open] summary h4::after {
+    content: "\25BE"; /* ▾ expanded */
 }
 
 #story-jump .storyline-list {
