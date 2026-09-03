@@ -44,5 +44,8 @@ layout: false
 
 {% block sidebar %}
 {% set firstPageUrl = basePath + (allStorylines | last).pages[0].slug + "/" %}
+{# The pagination `storylines` alias isn't in scope inside this extended block,
+   so pass the full storyline list explicitly for the "Jump to a Story" menu. #}
+{% set storylines = allStorylines %}
 {% include "sidebar-comics.njk" %}
 {% endblock %}
